@@ -189,3 +189,9 @@ let goat = 0
 let sheep = 1
 
 console.log(true && "NaN" && 1)
+
+const whatisthis = function (name){
+    console.log(`hello ${name}`);
+}
+
+whatisthis('daniel');
