@@ -195,3 +195,39 @@ const whatisthis = function (name){
 }
 
 whatisthis('daniel');
+
+let numbers = [1, 2, 3, 4, 5, 6, 7];
+let filtered = numbers.filter( element => element % 3 == 0); // [3, 6]
+let multi = filtered.map( element => element * 2); // [6, 12]
+
+// FUNCTION AS VARIABLE
+
+let soyouretellingme = function myfunk(avar){
+    console.log(avar);
+}
+
+let soyouretellingme2 = (avar) => {console.log(avar)}
+
+soyouretellingme2('wtaf');
+
+console.log(`hey
+wtf
+ajkshdasd`)
+
+console.log("nums:", numbers)
+// for a !IN! uses index
+for (const a in numbers){
+    console.log(numbers[a], a*2);
+}
+// for a !OF! uses values
+for (const a of numbers){
+    console.log(a, a*2);
+}
+
+const thereee = [5];
+thereee[0]++;
+console.log(thereee);
+
+const objy = {name: "dan", agey: 12}
+const {name, agey} = objy
+console.log(name, agey)

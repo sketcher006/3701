@@ -19,24 +19,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.gameboard}>
-        <View style={styles.gameboardRow}>
-          <Square value = "O" />
-          <Square value = "   " />
-          <Square value = "O" />
-        </View>
-        <View style={styles.gameboardRow}>
-          <Square value = "X" />
-          <Square value = "X" />
-          <Square value = "O" />
-        </View>
-        <View style={styles.gameboardRow}>
-          <Square value = "X" />
-          <Square value = "   " />
-          <Square value = "O" />
-        </View>
-      </View>
-      
+      <View style={styles.item1} />
+      <View style={styles.item2} />
+      <View style={styles.item3} />
+  
       <StatusBar style="auto" />
     </View>
   );
@@ -45,39 +31,23 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FF00FF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderTopWidth: 60,
-    borderBottomWidth: 15,
-    borderLeftWidth: 15,
-    borderRightWidth: 15,
-    borderColor: '#fff'
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    backgroundColor: 'lightgray',
   },
-  gameboard:{
-    backgroundColor: '#FFFF00',
-    padding: 10,
+  item1: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'yellow',
   },
-  gameboardRow: {
-    flexDirection: 'row',
+  item2: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'blue',
   },
-  button: {
-    width: 70,
-    height: 70,
-    backgroundColor: "#99f",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#000000',
-    textAlign: 'center',
+  item3: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'green',
   },
-  pressed: {
-    opacity: 0.5,
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontSize: 30,
-    fontWeight: 'bold',
-  }
 });
-
-
