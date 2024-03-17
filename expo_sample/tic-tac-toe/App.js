@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
   },
   gameboard:{
     backgroundColor: '#FFFF00',
-    padding: 10,
+    padding: 20,
+    borderRadius: 15,
   },
   gameboardRow: {
     flexDirection: 'row',
