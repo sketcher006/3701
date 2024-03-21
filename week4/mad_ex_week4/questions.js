@@ -290,20 +290,19 @@ function checkState(board) {
   let countO = 0;
 
   // check if board is empty
-  const firstNonNullishValue = board.find(value => value ?? null);
-  if (firstNonNullishValue === undefined ){
+  if (!board.some(cell => cell)) {
     return 'X to play';
-  } 
+  }
   
-  // check for winner
-  let winning_positions = [
+  // winning positions
+  const winning_positions = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], // horizonal
     [0, 3, 6], [1, 4, 7], [2, 5, 8], // vertical
     [0, 4, 8], [2, 4, 6]             // diagonal
   ];
 
-  // store all indexes of each players moves
-  let current_board = {X: [], O: []};
+  // check for winner
+  const current_board = {X: [], O: []};
 
   for (let i = 0; i < board.length; i++){
     if (board[i] === 'X'){
@@ -325,15 +324,12 @@ function checkState(board) {
   }
   
   // if no one is winning, check whos turn it is
-  if(countX+countO === 9){
+  if(countX + countO === 9){
     return 'It is a tie';
-  } else {
-    if(countX === countO){
-      return 'X to play';
-    } else if(countX === countO + 1){
-      return 'O to play';
-    }
-  }
+  } 
+  
+  return countX === countO ? 'X to play': 'O to play';
+  
 }
 
 module.exports = {
