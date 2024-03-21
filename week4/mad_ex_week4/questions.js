@@ -53,9 +53,14 @@
 function processData(data, callback) {
   // Your implementation here
   setTimeout(() => {
-    let new_data = data.toUpperCase()
-    callback(new_data);
-  }, 500);
+    if (typeof data !== 'string'){
+      console.log("process data error, do we ever get here??????");
+      callback(new Error("process data error"));
+    } else {
+      let new_data = data.toUpperCase()
+      callback(null, new_data);
+    }
+  }, 200);
 }
 
 /**

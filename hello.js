@@ -252,3 +252,75 @@ if (fs.existsSync(file_name)) {
     }
   });
 }
+
+
+const num = 3;
+
+const students = [
+  {
+    id: 1,
+    name: "Alice",
+    email: "alice@example.com",
+    GPA: 6.5,
+    hobbies: ["coding", "chess"],
+  },
+  {
+    id: 2,
+    name: "Bob",
+    email: "bob@example.com",
+    GPA: 5.4,
+    hobbies: ["running", "swiming"],
+  },
+  {
+    id: 3,
+    name: "Charlie",
+    email: "charlie@example.com",
+    GPA: 4.8,
+    hobbies: ["coding", "swimming"],
+  },
+  {
+    id: 4,
+    name: "Dave",
+    email: "dave@example.com",
+    GPA: 5.2,
+    hobbies: ["coding"],
+  },
+  {
+    id: 5,
+    name: "Bill",
+    email: "bill@example.com",
+    GPA: 5.2,
+    hobbies: ["coding", "swimming"],
+  },
+  {
+    id: 6,
+    name: "Alex",
+    email: "alex@example.com",
+    GPA: 6.2,
+    hobbies: ["coding", "reading"],
+  },
+];
+
+const selectStudents = [
+  { name: "Alex", email: "alex@example.com" },
+  { name: "Alice", email: "alice@example.com" },
+  { name: "Bill", email: "bill@example.com" },
+  {
+    name: "Dave",
+    email: "dave@example.com",
+  },
+];
+
+// Exercise 1
+let data = "hello";
+// Your implementation here
+function processData(data, callback) {
+  setTimeout(() => {
+    let new_data = data.toUpperCase()
+    callback(new_data);
+  }, 500);
+}
+
+processData(data, (new_data) => {
+  console.log(new_data);
+});
