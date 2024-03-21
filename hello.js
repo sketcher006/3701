@@ -231,3 +231,24 @@ console.log(thereee);
 const objy = {name: "dan", agey: 12}
 const {name, agey} = objy
 console.log(name, agey)
+
+const fs = require("fs");
+let file_name = `daniels_file.txt`;
+if (fs.existsSync(file_name)) {
+  console.log("File exists");
+} else {
+  console.log("We good to write file");
+  const content = 
+    `Name: dan\n` +
+    `Age: 37\n` +
+    `Hobby: none`
+
+  fs.writeFile(file_name, content, (err) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      console.log("File has been created!");
+    }
+  });
+}
