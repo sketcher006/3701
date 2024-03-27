@@ -1,3 +1,4 @@
+// Board.js
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Square } from './Square';
 // import color from "../constants/color";
