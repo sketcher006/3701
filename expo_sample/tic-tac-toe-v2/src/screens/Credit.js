@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
 export default Credit = function ({navigation}){
     const navToBack = () => navigation.goBack();
     return (
@@ -8,12 +8,44 @@ export default Credit = function ({navigation}){
                     Credits
                 </Text>
             </View>
-            <View>
-                <Text style={styles.blockText}>
-                    Dude who did everything: Daniel Jacobsen
-                </Text>
-            </View>
-
+            <ScrollView style={styles.scrollView}>
+                <View>
+                    <Text style={styles.blockText}>
+                        Dude who did everything: Daniel Jacobsen
+                    </Text>
+                    <Text style={styles.blockText}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Nullam nec nunc nec odio blandit ultricies.
+                        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Nullam nec nunc nec odio blandit ultricies.
+                    </Text>
+                    <Text style={styles.blockText}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Nullam nec nunc nec odio blandit ultricies.
+                        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Nullam nec nunc nec odio blandit ultricies.
+                    </Text>
+                    <Text style={styles.blockText}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Nullam nec nunc nec odio blandit ultricies.
+                        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Nullam nec nunc nec odio blandit ultricies.
+                    </Text>
+                    <Text style={styles.blockText}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Nullam nec nunc nec odio blandit ultricies.
+                        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Nullam nec nunc nec odio blandit ultricies.
+                    </Text>
+                    <Text style={styles.blockText}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Nullam nec nunc nec odio blandit ultricies.
+                        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Nullam nec nunc nec odio blandit ultricies.
+                    </Text>
+                </View>
+                
+            </ScrollView>
             <View style={styles.buttons}>
                 <Button title='Back' onPress={navToBack}/>
             </View>
@@ -36,11 +68,15 @@ const styles = StyleSheet.create({
         color:'white',
     },
     blockText: {
+        fontSize:18,
         marginLeft: 20,
         marginRight: 20,
         marginTop: 15,
         color:'white',
         lineHeight: 24,
+    },
+    scrollView: {
+        flex: 1,
     },
     buttons: {
         margin: 20,

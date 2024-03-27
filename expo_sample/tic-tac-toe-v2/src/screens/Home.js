@@ -1,13 +1,27 @@
+// Home.js
+
 import { View, Text, StyleSheet, Button } from "react-native";
 export default Home = function ({navigation}) {
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
-    const steps = ['O','','O','X','X','O','X','','O'];
+    const steps = ['','','','','','','','',''];
     return (
         <View style={styles.container}>
             
             <View>
                 <Text style={styles.heading}>Tic-Tac-Toe-Bro!</Text>
+            </View>
+
+            <View style={styles.buttonsContainer}>
+                <View>
+                    <Button title='<' onPress={navToRules}></Button>
+                </View>
+                <View style={styles.buttons}>
+                    <Button title='New Game' onPress={navToCredit}></Button>
+                </View>
+                <View>
+                    <Button title='>' onPress={navToCredit}></Button>
+                </View>
             </View>
 
             <View style={styles.gameBoard}>
@@ -22,7 +36,6 @@ export default Home = function ({navigation}) {
                 </View>
 
                 <View style={styles.buttons}>
-
                     <Button title='Credits' onPress={navToCredit}>
                         Go to credits
                     </Button>
@@ -35,7 +48,7 @@ export default Home = function ({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFC3FF',
+        backgroundColor: '#FFC3FF', // main page bg color
         alignItems: 'center',
         margin:20,
     },
@@ -43,17 +56,15 @@ const styles = StyleSheet.create({
         fontSize: 40,
         margin: 20,
     },      
-    gameBoard: {
-        flex: 1,
+    gameBoard: { // the yellow part
         margin: 40,
     },
     buttonsContainer: {
-        flex: 1,
         flexDirection: 'row',
         margin: 10,
     },
     buttons: {
-        margin: 20,
+        marginHorizontal: 10,
         width: 90,
     },
 })

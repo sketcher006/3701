@@ -1,11 +1,24 @@
-import {View, Text, StyleSheet } from "react-native";
+// Square.js
+import React, { useState } from 'react';
+import {View, Text, StyleSheet, Pressable  } from "react-native";
 // import color from "../constants/color";
 
 export const Square = ({text}) => {
+    const [symbol, setSymbol] = useState(text);
+    const [currentPlayer, setCurrentPlayer] = useState('X');
+
+    const handlePress = () => {
+        // toggle between X and O when the square is empty
+        if(symbol === ''){
+            setSymbol(currentPlayer);
+            setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+        }
+        
+    };
     return (
-        <View style={styles.box}>
-            <Text style={styles.innerText}>{text}</Text>
-        </View>
+        <Pressable style={styles.box} onPress={handlePress}>
+            <Text style={styles.innerText}>{symbol}</Text>
+        </Pressable>
     );
 };
 
