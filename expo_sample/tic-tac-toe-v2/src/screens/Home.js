@@ -1,10 +1,48 @@
 // Home.js
-
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from "react-native";
+import { initialState, makeMove, checkWinner } from '../datamodel/game';
+import Board from '../components/Board';
+
 export default Home = function ({navigation}) {
+
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
-    const steps = ['','','','','','','','',''];
+    
+    const [board, setBoard] = useState(initialState.board);
+    const [currentPlayer, setCurrentPlayer] = useState(initialState.currentPlayer);
+    const [winner, setWinner] = useState(initialState.winner);
+    const [gameOver, setGameOver] = useState(initialState.gameOver);
+    const [moveCounter, setMoveCounter] = useState(initialState.moveCount);
+
+    useEffect(() => {
+        console.log("current board state: ", board);
+    }, [board]);
+
+    const handleMove = (index) => {
+        if (!gameOver && board[index] === '') {
+            const newBoard = makeMove(board, index, currentPlayer);
+            setBoard(newBoard);
+            setMoveCounter(moveCounter + 1);
+            console.log("move counter: " + moveCounter);
+            // Check for winner after each move
+            const newWinner = checkWinner(newBoard);
+            if (newWinner) {
+              setWinner(newWinner);
+              setGameOver(true);
+            } else {
+              // Switch current player if no winner yet
+              setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+            }
+          }
+    };
+
+    const handleNewGame = () => {
+        setBoard(['', '', '', '', '', '', '', '', '']);        
+        setMoveCounter(0);
+        setCurrentPlayer('X');
+    };
+
     return (
         <View style={styles.container}>
             
@@ -17,7 +55,7 @@ export default Home = function ({navigation}) {
                     <Button title='<' onPress={navToRules}></Button>
                 </View>
                 <View style={styles.buttons}>
-                    <Button title='New Game' onPress={navToCredit}></Button>
+                    <Button title='New Game' onPress={handleNewGame}></Button>
                 </View>
                 <View>
                     <Button title='>' onPress={navToCredit}></Button>
@@ -25,7 +63,15 @@ export default Home = function ({navigation}) {
             </View>
 
             <View style={styles.gameBoard}>
-                <Board steps={steps} />
+                <Board 
+                    board={board}
+                    setBoard={setBoard}
+                    currentPlayer={currentPlayer}
+                    setCurrentPlayer={setCurrentPlayer}
+                    moveCounter={moveCounter} 
+                    setMoveCounter={setMoveCounter} 
+                    handleMove={handleMove}
+                />
             </View>
         
             <View style={styles.buttonsContainer}>

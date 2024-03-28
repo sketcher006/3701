@@ -20,11 +20,6 @@ export default function App() {
         <Stack.Screen name="Credit" component={Credit}/>
       </Stack.Navigator>
     </NavigationContainer>
-
-    // <View style={styles.container}>
-    //   <Board steps={steps} />
-    //   <StatusBar style="auto" />
-    // </View>
   );
 }
 

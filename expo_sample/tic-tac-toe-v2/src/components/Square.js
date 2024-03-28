@@ -1,22 +1,29 @@
 // Square.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {View, Text, StyleSheet, Pressable  } from "react-native";
 // import color from "../constants/color";
 
-export const Square = ({text}) => {
-    const [symbol, setSymbol] = useState(text);
-    const [currentPlayer, setCurrentPlayer] = useState('X');
+// key={i} text={s} board={board} setBoard={setBoard} currentPlayer={currentPlayer} setCurrentPlayer={setCurrentPlayer} moveCounter={moveCounter}
+// setMoveCounter={setMoveCounter} handleMove={handleMove}
 
-    const handlePress = () => {
-        // toggle between X and O when the square is empty
-        if(symbol === ''){
-            setSymbol(currentPlayer);
-            setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-        }
-        
-    };
+export const Square = ({text, currentPlayer, handleMove}) => {
+    const [symbol, setSymbol] = useState(text);
+
+    useEffect(() => {
+        setSymbol(text); // Update symbol when text prop changes
+    }, [text]);
+
+    // const handlePress = () => {
+    //     // toggle between X and O when the square is empty
+    //     if (symbol === '') {
+    //         let newSymbol = moveCounter % 2 === 0 ? 'X' : 'O';
+    //         setSymbol(newSymbol);
+    //         updateBoard(key, newSymbol);
+    //         incrementMoveCounter();
+    //     }
+    // };
     return (
-        <Pressable style={styles.box} onPress={handlePress}>
+        <Pressable style={styles.box} onPress={handleMove}>
             <Text style={styles.innerText}>{symbol}</Text>
         </Pressable>
     );
