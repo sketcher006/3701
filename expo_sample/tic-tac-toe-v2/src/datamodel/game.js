@@ -4,7 +4,7 @@ const initialState = {
     currentPlayer: 'X',
     winner: null,
     gameOver: false,
-    moveHistory: []
+    moveHistory: [['', '', '', '', '', '', '', '', '']]
 };
 
 const makeMove = (board, index, currentPlayer) => {
@@ -17,9 +17,43 @@ const makeMove = (board, index, currentPlayer) => {
 };
 
 const checkWinner = (board) => {
-    // Check rows, columns, and diagonals for a winning combination
-    // Return the winning player ('X' or 'O') or null if no winner
-};
+    let countX = 0;
+    let countO = 0;
+    
+    // winning positions
+    const winning_positions = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // horizonal
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // vertical
+      [0, 4, 8], [2, 4, 6]             // diagonal
+    ];
+  
+    // check for winner
+    const current_board = {X: [], O: []};
+  
+    for (let i = 0; i < board.length; i++){
+      if (board[i] === 'X'){
+        current_board.X.push(i);
+        countX++;
+      } else if (board[i] === 'O'){
+        current_board.O.push(i);
+        countO++;
+      }
+    }
+  
+    // check each players current positions and compare to winning positions
+    for (let player in current_board){
+      for (let i = 0; i < winning_positions.length; i++){
+        if (winning_positions[i].every(value => current_board[player].includes(value))){
+            console.log(`${player} wins!`);
+            return `${player}`;
+        }
+      }
+    }
+    
+    // if we get this far there is no winner    
+    return null;
+}
+
 
 
 
