@@ -59,5 +59,60 @@ const checkWinner = (board) => {
     return null;
 }
 
+const handleMove = (gameState, index) => {
+  const { board, currentPlayer, gameOver, moveCount, moveHistory } = gameState;
+  if (!gameOver && board[index] === '') {
+      const newBoard = makeMove(board, index, currentPlayer);
+      const newHistory = moveHistory.slice(0, moveCount+1);
+      const newMoveCounter = moveCount + 1;
+      const newWinner = checkWinner(newBoard);
+      return {
+          board: newBoard,
+          currentPlayer: currentPlayer === 'X' ? 'O' : 'X',
+          moveCount: moveCount + 1,
+          moveHistory: [...newHistory, newBoard],
+          winner: newWinner,
+          gameOver: newWinner !== null || newMoveCounter === 9,
+      };
+  }
+  return gameState;
+};
 
-export { initialState, makeMove, checkWinner };
+const handleNewGame = () => {
+  return initialState;
+};
+
+const handleUndo = (gameState) => {
+  const { moveHistory, moveCount } = gameState;
+  if (moveHistory.length > 1) {
+      const prevBoard = moveHistory[moveCount - 1];
+      return {
+          ...gameState,
+          board: prevBoard,
+          currentPlayer: gameState.currentPlayer === 'X' ? 'O' : 'X',
+          moveCount: moveCount - 1,
+          winner: null,
+          gameOver: false,
+      };
+  }
+  return gameState;
+};
+
+const handleRedo = (gameState) => {
+  const { moveHistory, moveCount } = gameState;
+  if (moveHistory.length > 1) {
+      const nextBoard = moveHistory[moveCount + 1];
+      return {
+          ...gameState,
+          board: nextBoard,
+          currentPlayer: gameState.currentPlayer === 'X' ? 'O' : 'X',
+          moveCount: moveCount + 1,
+          winner: null,
+          gameOver: false,
+      };
+  }
+  return gameState;
+};
+
+
+export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo };

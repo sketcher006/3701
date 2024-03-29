@@ -1,75 +1,39 @@
 // Home.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from "react-native";
-import { initialState, makeMove, checkWinner } from '../datamodel/game';
+import { initialState, handleMove, handleNewGame, handleUndo, handleRedo } from '../datamodel/game';
 import Board from '../components/Board';
 
 export default Home = function ({navigation}) {
-
+    const[gameState, setGameState] = useState(initialState);
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
+
+    // DEBUG
+    // useEffect(() => {
+    //     console.log("   board state: ", gameState.board);
+    //     console.log("     moveCount: ", gameState.moveCount);
+    //     console.log("history length: ", gameState.moveHistory.length);
+    // }, [gameState]);
+
+    const handleMoveClick = (index) => {
+        setGameState((prevState) => handleMove(prevState, index));
+    };
+
+    const handleNewGameClick = () => {
+        setGameState(handleNewGame());
+    };
+
+    const handleUndoClick = () => {
+        setGameState((prevState) => handleUndo(prevState));
+    };
+
+    const handleRedoClick = () => {
+        setGameState((prevState) => handleRedo(prevState));
+    };
+
+    const { board, moveCount, winner, moveHistory } = gameState;
     
-    const [board, setBoard] = useState(initialState.board);
-    const [currentPlayer, setCurrentPlayer] = useState(initialState.currentPlayer);
-    const [winner, setWinner] = useState(initialState.winner);
-    const [gameOver, setGameOver] = useState(initialState.gameOver);
-    const [moveCounter, setMoveCounter] = useState(initialState.moveCount);
-    const [moveHistory, setMoveHistory] = useState(initialState.moveHistory);
-
-    useEffect(() => {
-        console.log("current board state: ", board);
-    }, [board]);
-
-    const handleMove = (index) => {
-        if (!gameOver && board[index] === '') {
-            const newBoard = makeMove(board, index, currentPlayer);
-            const newHistory = moveHistory.slice(0, moveCounter+1);
-            setBoard(newBoard);
-            setMoveHistory([...newHistory, newBoard]);
-            setMoveCounter(moveCounter + 1);
-            // Check for winner after each move
-            const newWinner = checkWinner(newBoard);
-            if (newWinner) {
-              setWinner(newWinner);
-              setGameOver(true);
-            } else {
-              // Switch current player if no winner yet
-              setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-            }
-          }
-    };
-
-    const handleNewGame = () => {
-        setBoard(['', '', '', '', '', '', '', '', '']);
-        setWinner(null);
-        setGameOver(false);
-        setMoveCounter(0);
-        setCurrentPlayer('X');
-        setMoveHistory([['', '', '', '', '', '', '', '', '']]);
-    };
-
-    const handleUndo = () => {
-        if (moveHistory.length > 1) {
-            const prevBoard = moveHistory[moveCounter-1];
-            setBoard(prevBoard);
-            setMoveCounter(moveCounter - 1);
-            setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-            setWinner(null);
-            setGameOver(false);
-        }
-    };
-
-    const handleRedo = () => {
-        if (moveHistory.length > 1) {
-            const nextBoard = moveHistory[moveCounter+1];
-            setBoard(nextBoard);
-            setMoveCounter(moveCounter + 1);
-            setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-            setWinner(null);
-            setGameOver(false);
-        }
-    };
-
     return (
         <View style={styles.container}>
             
@@ -79,14 +43,14 @@ export default Home = function ({navigation}) {
 
             <View style={styles.buttonsContainer}>
             <View>
-                <Button title='<' onPress={handleUndo} disabled={moveCounter < 1}></Button>
+                <Button title='<' onPress={handleUndoClick} disabled={moveCount < 1}></Button>
             </View>
 
                 <View style={styles.buttons}>
-                    <Button title='New Game' onPress={handleNewGame}></Button>
+                    <Button title='New Game' onPress={handleNewGameClick} disabled={moveHistory.length < 2}></Button>
                 </View>
                 <View>
-                    <Button title='>' onPress={handleRedo} disabled={moveCounter === moveHistory.length-1}></Button>
+                    <Button title='>' onPress={handleRedoClick} disabled={moveCount === moveHistory.length-1}></Button>
                 </View>
 
 
@@ -95,7 +59,7 @@ export default Home = function ({navigation}) {
             <View style={styles.gameBoard}>
                 <Board 
                     board={board}
-                    handleMove={handleMove}
+                    handleMove={handleMoveClick}
                 />
             </View>
         
