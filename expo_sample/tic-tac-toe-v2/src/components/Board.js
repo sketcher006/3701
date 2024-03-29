@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Square } from './Square';
 // import color from "../constants/color";
 
-export default Board = function({board, setBoard,  currentPlayer, setCurrentPlayer, moveCounter, setMoveCounter, handleMove}) {
+export default Board = function({board, handleMove}) {
   
   return (
     <View style={styles.board}>
@@ -11,7 +11,6 @@ export default Board = function({board, setBoard,  currentPlayer, setCurrentPlay
           <Square 
             key={i} 
             text={s}
-            currentPlayer={currentPlayer}
             handleMove={() => handleMove(i)}
           />
       ))}

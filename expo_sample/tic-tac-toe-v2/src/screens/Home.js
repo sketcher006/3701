@@ -50,10 +50,7 @@ export default Home = function ({navigation}) {
 
     const handleUndo = () => {
         if (moveHistory.length > 1) {
-            const newHistory = [...moveHistory];
-            // newHistory.pop(); // Remove the latest move
             const prevBoard = moveHistory[moveCounter-1];
-            // setMoveHistory(newHistory);
             setBoard(prevBoard);
             setMoveCounter(moveCounter - 1);
             setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
@@ -64,22 +61,13 @@ export default Home = function ({navigation}) {
 
     const handleRedo = () => {
         if (moveHistory.length > 1) {
-            // const newHistory = [...moveHistory];
             const nextBoard = moveHistory[moveCounter+1];
-            // setMoveHistory(newHistory);
             setBoard(nextBoard);
             setMoveCounter(moveCounter + 1);
             setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
             setWinner(null);
             setGameOver(false);
         }
-    };
-
-    const DEBUGcount = () => {
-        console.log("move counter: " + moveCounter);
-    };
-    const DEBUGhistoyLength = () => {
-        console.log("history length: " + moveHistory.length);
     };
 
     return (
@@ -107,11 +95,6 @@ export default Home = function ({navigation}) {
             <View style={styles.gameBoard}>
                 <Board 
                     board={board}
-                    setBoard={setBoard}
-                    currentPlayer={currentPlayer}
-                    setCurrentPlayer={setCurrentPlayer}
-                    moveCounter={moveCounter} 
-                    setMoveCounter={setMoveCounter} 
                     handleMove={handleMove}
                 />
             </View>
@@ -131,22 +114,11 @@ export default Home = function ({navigation}) {
             </View>
 
 
-
             {winner !== null && (
                 <View style={styles.winnerContainer}>
-                    <Text style={styles.winnerText}>Winner: {winner}</Text>
+                    <Text style={styles.winnerText}>{winner}</Text>
                 </View>
             )}
-            {/* <Text>Debug console operations</Text>
-            <View style={styles.buttonsContainer}>
-                <View>
-                    <Button title='cnt' onPress={DEBUGcount}></Button>
-                </View>
-                <View>
-                    <Button title='his' onPress={DEBUGhistoyLength}></Button>
-                </View>
-
-            </View> */}
         </View>
     )
 }

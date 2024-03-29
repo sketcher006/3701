@@ -45,16 +45,19 @@ const checkWinner = (board) => {
       for (let i = 0; i < winning_positions.length; i++){
         if (winning_positions[i].every(value => current_board[player].includes(value))){
             console.log(`${player} wins!`);
-            return `${player}`;
+            return `${player} wins!`;
         }
       }
     }
     
+    if(current_board.X.length + current_board.O.length === 9){
+        console.log("It's a draw!");
+        return "It's a draw!";
+    };
+
     // if we get this far there is no winner    
     return null;
 }
-
-
 
 
 export { initialState, makeMove, checkWinner };
