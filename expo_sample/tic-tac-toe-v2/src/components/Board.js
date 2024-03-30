@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Square } from './Square';
 // import color from "../constants/color";
 
-export default Board = function({board, handleMove}) {
+export default Board = function({board, handleMove, winningIndexes}) {
   
   return (
     <View style={styles.board}>
@@ -11,6 +11,7 @@ export default Board = function({board, handleMove}) {
           <Square 
             key={i} 
             text={s}
+            isWinningSquare={winningIndexes.includes(i)}
             handleMove={() => handleMove(i)}
           />
       ))}

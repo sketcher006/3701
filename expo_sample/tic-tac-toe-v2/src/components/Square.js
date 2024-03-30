@@ -3,15 +3,15 @@ import React, { useState, useEffect } from 'react';
 import {View, Text, StyleSheet, Pressable  } from "react-native";
 // import color from "../constants/color";
 
-export const Square = ({text, handleMove}) => {
+export const Square = ({text, handleMove, isWinningSquare}) => {
     const [symbol, setSymbol] = useState(text);
 
     useEffect(() => {
         setSymbol(text); // Update symbol when text changes
     }, [text]);
-
+    
     return (
-        <Pressable style={styles.box} onPress={handleMove}>
+        <Pressable style={[styles.box, isWinningSquare && styles.winningBox]} onPress={handleMove}>
             <Text style={styles.innerText}>{symbol}</Text>
         </Pressable>
     );
@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
         margin: 1, 
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    winningBox: {
+        backgroundColor: '#00FF00',
     },
     innerText: {
       fontSize: 40,

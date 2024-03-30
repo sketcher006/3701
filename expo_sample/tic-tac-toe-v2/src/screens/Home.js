@@ -16,6 +16,8 @@ export default Home = function ({navigation}) {
     //     console.log("history length: ", gameState.moveHistory.length);
     // }, [gameState]);
 
+    const { board, moveCount, winner, moveHistory, winningIndexes } = gameState;
+
     const handleMoveClick = (index) => {
         setGameState((prevState) => handleMove(prevState, index));
     };
@@ -32,7 +34,6 @@ export default Home = function ({navigation}) {
         setGameState((prevState) => handleRedo(prevState));
     };
 
-    const { board, moveCount, winner, moveHistory } = gameState;
     
     return (
         <View style={styles.container}>
@@ -42,9 +43,9 @@ export default Home = function ({navigation}) {
             </View>
 
             <View style={styles.buttonsContainer}>
-            <View>
-                <Button title='<' onPress={handleUndoClick} disabled={moveCount < 1}></Button>
-            </View>
+                <View>
+                    <Button title='<' onPress={handleUndoClick} disabled={moveCount < 1}></Button>
+                </View>
 
                 <View style={styles.buttons}>
                     <Button title='New Game' onPress={handleNewGameClick} disabled={moveHistory.length < 2}></Button>
@@ -52,14 +53,20 @@ export default Home = function ({navigation}) {
                 <View>
                     <Button title='>' onPress={handleRedoClick} disabled={moveCount === moveHistory.length-1}></Button>
                 </View>
-
-
             </View>
+
+            <View style={styles.dynamicContainer}>
+                <Text style={styles.dynamicText}>
+                    {winner !== null ? `${winner}` : `${gameState.currentPlayer} to play`}
+                </Text>
+            </View>
+
 
             <View style={styles.gameBoard}>
                 <Board 
                     board={board}
                     handleMove={handleMoveClick}
+                    winningIndexes={winningIndexes}
                 />
             </View>
         
@@ -75,14 +82,20 @@ export default Home = function ({navigation}) {
                         Go to credits
                     </Button>
                 </View>
+
+                <View style={styles.buttons}>
+                    <Button 
+                        title='winInd' 
+                        onPress={() => console.log(winningIndexes)}
+                    >
+                    winInd
+                    </Button>
+                </View>
+
             </View>
 
 
-            {winner !== null && (
-                <View style={styles.winnerContainer}>
-                    <Text style={styles.winnerText}>{winner}</Text>
-                </View>
-            )}
+
         </View>
     )
 }
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
         margin: 20,
     },      
     gameBoard: { // the yellow part
-        margin: 40,
+        margin: 20,
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -109,10 +122,16 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         width: 90,
     },
-    winnerContainer: {
+    dynamicContainer: {
         margin: 20,
+        backgroundColor: '#CCB3FF',
+        width: 300,
+        borderRadius: 10,
+        paddingVertical: 5,
     },
-    winnerText: {
+    dynamicText: {
         fontSize: 30,
+        textAlign: 'center',
+        color: '#666666',
     },
 })

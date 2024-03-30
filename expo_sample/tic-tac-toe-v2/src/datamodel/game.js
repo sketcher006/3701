@@ -4,7 +4,8 @@ const initialState = {
     currentPlayer: 'X',
     winner: null,
     gameOver: false,
-    moveHistory: [['', '', '', '', '', '', '', '', '']]
+    moveHistory: [['', '', '', '', '', '', '', '', '']],
+    winningIndexes: []
 };
 
 const makeMove = (board, index, currentPlayer) => {
@@ -44,35 +45,39 @@ const checkWinner = (board) => {
     for (let player in current_board){
       for (let i = 0; i < winning_positions.length; i++){
         if (winning_positions[i].every(value => current_board[player].includes(value))){
-            console.log(`${player} wins!`);
-            return `${player} wins!`;
+            console.log(`${player} wins! with winning pos index ${i}`);
+            console.log(winningIndexes);
+            console.log(...winning_positions[i]);
+            return { winner: `${player} wins!`, winningIndexes: [...winning_positions[i]] };
         }
       }
     }
     
     if(current_board.X.length + current_board.O.length === 9){
-        console.log("It's a draw!");
-        return "It's a draw!";
+        console.log("Tie!");
+        return { winner: "Tie!", winningIndexes: [] };
     };
 
     // if we get this far there is no winner    
-    return null;
+    return { winner: null, winningIndexes: [] };
 }
 
 const handleMove = (gameState, index) => {
-  const { board, currentPlayer, gameOver, moveCount, moveHistory } = gameState;
+  const { board, currentPlayer, gameOver, moveCount, moveHistory, winningIndexes } = gameState;
   if (!gameOver && board[index] === '') {
       const newBoard = makeMove(board, index, currentPlayer);
       const newHistory = moveHistory.slice(0, moveCount+1);
       const newMoveCounter = moveCount + 1;
-      const newWinner = checkWinner(newBoard);
+      // const newWinner = checkWinner(newBoard);
+      const { winner, winningIndexes: newWinningIndexes } = checkWinner(newBoard, winningIndexes);
       return {
           board: newBoard,
           currentPlayer: currentPlayer === 'X' ? 'O' : 'X',
           moveCount: moveCount + 1,
           moveHistory: [...newHistory, newBoard],
-          winner: newWinner,
-          gameOver: newWinner !== null || newMoveCounter === 9,
+          winner: winner,
+          gameOver: winner !== null || newMoveCounter === 9,
+          winningIndexes: newWinningIndexes
       };
   }
   return gameState;
