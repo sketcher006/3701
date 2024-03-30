@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     winningBox: {
-        backgroundColor: '#00FF00',
+        backgroundColor: '#FF6666',
     },
     innerText: {
       fontSize: 40,

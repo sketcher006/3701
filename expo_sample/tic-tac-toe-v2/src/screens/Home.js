@@ -88,9 +88,10 @@ export default Home = function ({navigation}) {
                         title='winInd' 
                         onPress={() => console.log(winningIndexes)}
                     >
-                    winInd
+                        winInd
                     </Button>
                 </View>
+
 
             </View>
 
