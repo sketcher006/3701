@@ -121,4 +121,4 @@ const handleRedo = (gameState) => {
 };
 
 
-export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo };
+export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo};

@@ -324,3 +324,158 @@ function processData(data, callback) {
 processData(data, (new_data) => {
   console.log(new_data);
 });
+
+
+
+// function createAccount(accountName, openingBalance) {
+//   // your implementation here
+//   this.accountName = accountName;
+//   this.openingBalance = openingBalance;
+//   this.transactions = [{action: "open", amount: openingBalance}];
+
+//   this.deposit = (amount) => {
+//     if (amount > 0){
+//       this.openingBalance += amount;
+//       this.transactions.push({action: "deposit", amount: amount});
+//       return "OK";
+//     };
+//     return "Invalid amount";
+//   };
+  
+//   this.withdraw = (amount) => {
+//     if(amount > 0){
+//       if(amount <= this.openingBalance){
+//         this.openingBalance -= amount;
+//         this.transactions.push({action: "withdraw", amount: amount});
+//         return "OK";
+//       }
+//       return "Withdraw over balance";
+//     };
+//     return "Invalid amount";
+//   };
+
+//   this.checkAccount = () => {
+//     return {transactions: this.transactions, balance: this.openingBalance};
+//   };
+// };
+
+function createAccount(accountName, openingBalance) {
+  // Check if called with 'new'
+  if (this instanceof createAccount) {
+    // Called with 'new', treat as constructor function
+    this.accountName = accountName;
+    this.openingBalance = openingBalance;
+    this.transactions = [{ action: "open", amount: openingBalance }];
+
+    this.deposit = (amount) => {
+      if (amount > 0){
+        this.openingBalance += amount;
+        this.transactions.push({action: "deposit", amount: amount});
+        return "OK";
+      };
+      return "Invalid amount";
+    };
+    
+    this.withdraw = (amount) => {
+      if(amount > 0){
+        if(amount <= this.openingBalance){
+          this.openingBalance -= amount;
+          this.transactions.push({action: "withdraw", amount: amount});
+          return "OK";
+        }
+        return "Withdraw over balance";
+      };
+      return "Invalid amount";
+    };
+  
+    this.checkAccount = () => {
+      return {transactions: this.transactions, balance: this.openingBalance};
+    };
+
+  } else {
+    // Called without 'new', treat as regular function
+    const account = {
+      accountName,
+      openingBalance,
+      transactions: [{ action: "open", amount: openingBalance }],
+      deposit(amount) {
+        if (amount > 0){
+          this.openingBalance += amount;
+          this.transactions.push({action: "deposit", amount: amount});
+          return "OK";
+        };
+        return "Invalid amount";
+      },
+      withdraw(amount) {
+        if(amount > 0){
+          if(amount <= this.openingBalance){
+            this.openingBalance -= amount;
+            this.transactions.push({action: "withdraw", amount: amount});
+            return "OK";
+          }
+          return "Withdraw over balance";
+        };
+        return "Invalid amount";
+      },
+      checkAccount() {
+        return {transactions: this.transactions, balance: this.openingBalance};
+      }
+    };
+    return account;
+  }
+}
+
+const myAccount = new createAccount("Daniel", 100);
+console.log("balance:  ", myAccount.checkAccount().balance);
+console.log(myAccount.deposit(50));
+console.log(myAccount.checkAccount());
+console.log(myAccount.withdraw(325));
+console.log(myAccount.checkAccount());
+
+let initialName = "daniel";
+initialName.toUpperCase();
+console.log(initialName.toUpperCase());
+
+
+
+function Person(initialName, initialAge) {
+  const PersonObject = {
+  };    
+
+  Object.defineProperty(PersonObject, 'setName', {
+    set(newName) {
+      PersonObject.name = newName[0].toUpperCase() + newName.slice(1);
+      console.log("name has been set");
+    }
+  });
+  Object.defineProperty(PersonObject, 'setAge', {
+    set(newAge) {
+      if (newAge >= 0 && newAge <= 120) {
+        PersonObject.age = newAge;
+        console.log("age has been set");
+      } else {
+        console.log("Invalid age provided");
+      }
+    }
+  });
+  Object.defineProperty(PersonObject, 'getName', {
+    get() {
+      return PersonObject.name;
+    }
+  });
+  Object.defineProperty(PersonObject, 'getAge', {
+    get() {
+      return PersonObject.age;
+    }
+  });
+
+  PersonObject.name = initialName;
+  PersonObject.age = initialAge;
+
+
+  return PersonObject;
+}
+
+const person = new Person("john", 25);
+console.log(person.getName);
+console.log(person.getAge);

@@ -1,21 +1,41 @@
 // Home.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from "react-native";
-import { initialState, handleMove, handleNewGame, handleUndo, handleRedo } from '../datamodel/game';
+import { initialState, handleMove, handleNewGame, handleUndo, handleRedo, } from '../datamodel/game';
+import { handleSave, handleLoad, handleClear } from '../datamodel/storage';
 import Board from '../components/Board';
 
 export default Home = function ({navigation}) {
     const[gameState, setGameState] = useState(initialState);
+    
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
 
-    // DEBUG
     // useEffect(() => {
-    //     console.log("   board state: ", gameState.board);
-    //     console.log("     moveCount: ", gameState.moveCount);
-    //     console.log("history length: ", gameState.moveHistory.length);
+    //     const firstLoad = async () => {
+    //         const myData = await handleLoad();
+    //         handleLoad(myData);
+    //     };
+    //     firstLoad();
+    // }, []);
+
+    const handleLoadClick = async () => {
+        const loadedData = await handleLoad();
+        setGameState(loadedData);
+    };
+
+    // useEffect(() => {
+    //     handleSave(gameState);
     // }, [gameState]);
 
+    const handleSaveClick = () => {
+        handleSave(gameState);
+    };
+
+    const handleClearClick = () => {
+        handleClear();
+    };
+    
     const { board, moveCount, winner, moveHistory, winningIndexes } = gameState;
 
     const handleMoveClick = (index) => {
@@ -72,6 +92,21 @@ export default Home = function ({navigation}) {
         
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
+                    <Button title='Save' onPress={handleSaveClick}>
+                        Save game
+                    </Button>
+                </View>
+
+                <View style={styles.buttons}>
+                    <Button title='Load' onPress={handleLoadClick}>
+                        Load game
+                    </Button>
+                </View>
+
+            </View>
+
+            <View style={styles.buttonsContainer}>
+                <View style={styles.buttons}>
                     <Button title='Rules' onPress={navToRules}>
                         Go to rules
                     </Button>
@@ -83,17 +118,15 @@ export default Home = function ({navigation}) {
                     </Button>
                 </View>
 
+            </View>
+
+            <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
-                    <Button 
-                        title='winInd' 
-                        onPress={() => console.log(winningIndexes)}
-                    >
-                        winInd
+                    <Button title='Clear Save Data' onPress={handleClearClick}>
+                        Go to credits
                     </Button>
                 </View>
-
-
-            </View>
+            </View>  
 
 
 
