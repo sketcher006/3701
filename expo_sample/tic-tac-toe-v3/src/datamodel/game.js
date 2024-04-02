@@ -1,3 +1,5 @@
+import { View, Text, StyleSheet, Button, Modal } from "react-native";
+
 const initialState = {
     board: ['', '', '', '', '', '', '', '', ''], // game board
     moveCount: 0,
@@ -120,5 +122,40 @@ const handleRedo = (gameState) => {
   return gameState;
 };
 
+const displaySavedData = (loadedData) => {
+    console.log("(displaySavedData)loaded data:", loadedData);
+    console.log("(displaySavedData)loaded data type:", typeof loadedData);
+    console.log("(displaySavedData)loaded data length:", loadedData.length);
 
-export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo};
+    // map over the loaded data and display it in the modal
+    loadedData.gameStates.map((state, index) => {
+        console.log("Game State", index + 1);
+        console.log("Current Player: ", state.currentPlayer);
+        console.log("Game Over: ", state.gameOver.toString());
+        console.log("Move Count: ", state.moveCount);
+        console.log("Winner: ", state.winner);
+        console.log("Board: ", state.board);
+        console.log("Move History: ", state.moveHistory);
+        console.log("Winning Indexes: ", state.winningIndexes);
+    });
+
+    return (
+        <View>
+            {loadedData.gameStates.map((state, index) => (
+                <View key={index}>
+                    <Text>Game State {index + 1}</Text>
+                    <Text>Current Player: {state.currentPlayer}</Text>
+                    <Text>Game Over: {state.gameOver.toString()}</Text>
+                    <Text>Move Count: {state.moveCount}</Text>
+                    <Text>Winner: {state.winner}</Text>
+                    <Text>Board: {state.board.join(', ')}</Text>
+                    <Text>Move History: {state.moveHistory.join(', ')}</Text>
+                    <Text>Winning Indexes: {state.winningIndexes.join(', ')}</Text>
+                </View>
+            ))}
+        </View>
+    );
+}
+
+
+export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo, displaySavedData};

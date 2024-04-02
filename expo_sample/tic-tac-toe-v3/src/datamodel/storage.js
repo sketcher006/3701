@@ -47,26 +47,48 @@ async function handleSave(gameState) {
     }
 }
 
-async function handleLoad() {
+// the purpose of this function should be to load the saved game data and display it in the modal, 
+// or at least return the data in a way the modal can display it
+async function handleLoadModal() {
+    console.log("----------this is where it starts----------");
     try {
         const strData = await AsyncStorage.getItem(key);
         console.log("saved data loading:", strData)
         if (strData !== null) {
-            console.log("Game loaded!");
+            console.log("Game data loaded!");
             const gameData = JSON.parse(strData);
             console.log("loaded data:", gameData);
-            
-            const latestGameState = gameData.gameStates[gameData.gameStates.length - 1];
-            return latestGameState;
+            return gameData;
         } else {
             console.log("No saved game found.");
             return null;
         }
-    } catch (e) {
-        console.log("Error loading game: ", e);
+    } catch (error) {
+        console.log("Error loading game: ", error);
         return null;
     }
 }
+
+// async function handleLoad() {
+//     try {
+//         const strData = await AsyncStorage.getItem(key);
+//         console.log("saved data loading:", strData)
+//         if (strData !== null) {
+//             console.log("Game loaded!");
+//             const gameData = JSON.parse(strData);
+//             console.log("loaded data:", gameData);
+            
+//             const latestGameState = gameData.gameStates[gameData.gameStates.length - 1];
+//             return latestGameState;
+//         } else {
+//             console.log("No saved game found.");
+//             return null;
+//         }
+//     } catch (e) {
+//         console.log("Error loading game: ", e);
+//         return null;
+//     }
+// }
 
 
 // async function handleLoad() {
@@ -99,4 +121,4 @@ async function handleClear() {
     }
 }
 
-export { handleSave, handleLoad, handleClear};
+export { handleSave, handleClear, handleLoadModal};

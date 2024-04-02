@@ -1,32 +1,16 @@
 // Home.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from "react-native";
-import { initialState, handleMove, handleNewGame, handleUndo, handleRedo, } from '../datamodel/game';
-import { handleSave, handleLoad, handleClear } from '../datamodel/storage';
+import { View, Text, StyleSheet, Button, Modal } from "react-native";
+import { initialState, handleMove, handleNewGame, handleUndo, handleRedo, displaySavedData } from '../datamodel/game';
+import { handleSave, handleLoad, handleClear, handleLoadModal } from '../datamodel/storage';
 import Board from '../components/Board';
 
 export default Home = function ({navigation}) {
     const[gameState, setGameState] = useState(initialState);
-    
+    const[modalVisible, setModalVisible] = useState(false);
+    const[loadedData, setLoadedData] = useState(null);
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
-
-    // useEffect(() => {
-    //     const firstLoad = async () => {
-    //         const myData = await handleLoad();
-    //         handleLoad(myData);
-    //     };
-    //     firstLoad();
-    // }, []);
-
-    const handleLoadClick = async () => {
-        const loadedData = await handleLoad();
-        setGameState(loadedData);
-    };
-
-    // useEffect(() => {
-    //     handleSave(gameState);
-    // }, [gameState]);
 
     const handleSaveClick = () => {
         handleSave(gameState);
@@ -54,6 +38,25 @@ export default Home = function ({navigation}) {
         setGameState((prevState) => handleRedo(prevState));
     };
 
+    const handleModalOpen = async (modalType) => {
+        if (modalType === "load") {
+            try {
+                const loadedData = await handleLoadModal(); // returns object with previous saved game data
+                console.log("loadedData", loadedData);
+                console.log(typeof loadedData);
+                setLoadedData(loadedData);
+                // const formattedData = displaySavedData(loadedData);
+                // console.log("formattedData", formattedData);
+                setModalVisible("load");
+                // return formattedData;
+            } catch (error) {
+                console.log("Error loading game: ", error);
+                alert("Error loading game: ", error);
+            }
+        } else {
+            setModalVisible(modalType);
+        }
+    };
     
     return (
         <View style={styles.container}>
@@ -81,7 +84,6 @@ export default Home = function ({navigation}) {
                 </Text>
             </View>
 
-
             <View style={styles.gameBoard}>
                 <Board 
                     board={board}
@@ -89,20 +91,59 @@ export default Home = function ({navigation}) {
                     winningIndexes={winningIndexes}
                 />
             </View>
-        
+
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
-                    <Button title='Save' onPress={handleSaveClick}>
-                        Save game
-                    </Button>
+                    <Button title="Save" onPress={() => handleModalOpen("save")} />
                 </View>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible === "save"}
+                    onRequestClose={() => {
+                        setModalVisible(null);
+                    }}
+                >
+                    <View style={styles.modalPopUp}>
+                        <View style={styles.modalMessageBox}>
+                            <Text>Are you sure you want to save the game?</Text>
+                            <View style={styles.buttonsContainer}>
+                                <View style={styles.buttons}>
+                                    <Button title="Save" onPress={() => {setModalVisible(null); handleSaveClick()}} />
+                                </View>
+                                <View style={styles.buttons}>
+                                    <Button title="Close" onPress={() => setModalVisible(null)} />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
 
                 <View style={styles.buttons}>
-                    <Button title='Load' onPress={handleLoadClick}>
-                        Load game
-                    </Button>
+                    <Button title="Load" onPress={() => handleModalOpen("load")} />
                 </View>
-
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible === "load"}
+                    onRequestClose={() => {
+                        setModalVisible(null);
+                    }}
+                >
+                    <View style={styles.modalPopUp}>
+                        <View style={styles.modalMessageBox}>
+                            {loadedData && displaySavedData(loadedData)}
+                            <View style={styles.buttonsContainer}>
+                                <View style={styles.buttons}>
+                                    <Button title="Close" onPress={() => setModalVisible(null)} />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+                    {/* <Button title='Load' onPress={handleLoadClick}>
+                        Load game
+                    </Button> */}
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -122,10 +163,11 @@ export default Home = function ({navigation}) {
 
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
-                    <Button title='Clear Save Data' onPress={handleClearClick}>
+                    <Button title='Clr Data' onPress={handleClearClick}>
                         Go to credits
                     </Button>
                 </View>
+
             </View>  
 
 
@@ -167,5 +209,17 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         color: '#666666',
+    },
+    modalPopUp: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalMessageBox: {
+        backgroundColor: 'white', 
+        padding: 20, 
+        borderRadius: 10,
+        alignItems: 'center',
     },
 })
