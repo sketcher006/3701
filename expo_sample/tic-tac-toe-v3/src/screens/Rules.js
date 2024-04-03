@@ -56,11 +56,11 @@ export default Rules = function ({navigation}){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#3333FF',
+        backgroundColor: 'green',
     },
     headingContainer: {
         padding: 20, 
-        backgroundColor: 'blue',
+        backgroundColor: '#006400',
         alignItems: 'center',
     },
     heading: {

@@ -8,9 +8,10 @@ import Board from '../components/Board';
 export default Home = function ({navigation}) {
     const[gameState, setGameState] = useState(initialState);
     const[modalVisible, setModalVisible] = useState(false);
-    const[loadedData, setLoadedData] = useState(null);
+    // const[loadedData, setLoadedData] = useState(null);
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
+    const navToLoad = () => navigation.navigate('Load');
 
     const handleSaveClick = () => {
         handleSave(gameState);
@@ -38,25 +39,25 @@ export default Home = function ({navigation}) {
         setGameState((prevState) => handleRedo(prevState));
     };
 
-    const handleModalOpen = async (modalType) => {
-        if (modalType === "load") {
-            try {
-                const loadedData = await handleLoadModal(); // returns object with previous saved game data
-                console.log("loadedData", loadedData);
-                console.log(typeof loadedData);
-                setLoadedData(loadedData);
-                // const formattedData = displaySavedData(loadedData);
-                // console.log("formattedData", formattedData);
-                setModalVisible("load");
-                // return formattedData;
-            } catch (error) {
-                console.log("Error loading game: ", error);
-                alert("Error loading game: ", error);
-            }
-        } else {
-            setModalVisible(modalType);
-        }
-    };
+    // const handleModalOpen = async (modalType) => {
+    //     if (modalType === "load") {
+    //         try {
+    //             const loadedData = await handleLoadModal(); // returns object with previous saved game data
+    //             console.log("loadedData", loadedData);
+    //             console.log(typeof loadedData);
+    //             setLoadedData(loadedData);
+    //             // const formattedData = displaySavedData(loadedData);
+    //             // console.log("formattedData", formattedData);
+    //             setModalVisible("load");
+    //             // return formattedData;
+    //         } catch (error) {
+    //             console.log("Error loading game: ", error);
+    //             alert("Error loading game: ", error);
+    //         }
+    //     } else {
+    //         setModalVisible(modalType);
+    //     }
+    // };
     
     return (
         <View style={styles.container}>
@@ -120,30 +121,9 @@ export default Home = function ({navigation}) {
                 </Modal>
 
                 <View style={styles.buttons}>
-                    <Button title="Load" onPress={() => handleModalOpen("load")} />
+                    <Button title="Load" onPress={navToLoad()} />
                 </View>
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={modalVisible === "load"}
-                    onRequestClose={() => {
-                        setModalVisible(null);
-                    }}
-                >
-                    <View style={styles.modalPopUp}>
-                        <View style={styles.modalMessageBox}>
-                            {loadedData && displaySavedData(loadedData)}
-                            <View style={styles.buttonsContainer}>
-                                <View style={styles.buttons}>
-                                    <Button title="Close" onPress={() => setModalVisible(null)} />
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
-                    {/* <Button title='Load' onPress={handleLoadClick}>
-                        Load game
-                    </Button> */}
+                
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -216,10 +196,15 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
+    modalHeading: {
+        fontSize: 20,
+    },
     modalMessageBox: {
         backgroundColor: 'white', 
         padding: 20, 
         borderRadius: 10,
         alignItems: 'center',
+        maxHeight: 600,
+        width: 350,
     },
 })

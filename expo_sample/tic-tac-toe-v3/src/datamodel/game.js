@@ -143,19 +143,28 @@ const displaySavedData = (loadedData) => {
         <View>
             {loadedData.gameStates.map((state, index) => (
                 <View key={index}>
-                    <Text>Game State {index + 1}</Text>
-                    <Text>Current Player: {state.currentPlayer}</Text>
+                    <Text>({index + 1})</Text>
+                    <Text>Result: {state.winner}</Text>
+                    <Text>Steps: {state.moveCount}</Text>
+                    <Button style={styles.buttons} title="Load Game" onPress={() => console.log("Load Game")} />
+                    <Button title="Delete Game" onPress={() => console.log("Delete Game")} />
+                    {/* <Text>Current Player: {state.currentPlayer}</Text>
                     <Text>Game Over: {state.gameOver.toString()}</Text>
-                    <Text>Move Count: {state.moveCount}</Text>
-                    <Text>Winner: {state.winner}</Text>
                     <Text>Board: {state.board.join(', ')}</Text>
                     <Text>Move History: {state.moveHistory.join(', ')}</Text>
-                    <Text>Winning Indexes: {state.winningIndexes.join(', ')}</Text>
+                    <Text>Winning Indexes: {state.winningIndexes.join(', ')}</Text> */}
                 </View>
             ))}
         </View>
     );
 }
 
+
+const styles = StyleSheet.create({
+    buttons: {
+        marginHorizontal: 10,
+        width: 90,
+    },
+})
 
 export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo, displaySavedData};
