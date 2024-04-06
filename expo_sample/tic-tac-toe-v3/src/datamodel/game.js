@@ -11,6 +11,7 @@ const initialState = {
 };
 
 const makeMove = (board, index, currentPlayer) => {
+    console.log(`${currentPlayer} chose index ${index}`);
     if (board[index] === '') {
       const newBoard = [...board]; // Create a copy of the board
       newBoard[index] = currentPlayer; // Update the board with the current player's symbol
@@ -48,7 +49,6 @@ const checkWinner = (board, winningIndexes) => {
       for (let i = 0; i < winning_positions.length; i++){
           if (winning_positions[i].every(value => current_board[player].includes(value))){
               console.log(`${player} wins! with winning pos index ${i}`);
-              console.log(winningIndexes);
               console.log(...winning_positions[i]);
               return { winner: `${player} wins!`, winningIndexes: [...winning_positions[i]] };
           }
@@ -66,61 +66,64 @@ const checkWinner = (board, winningIndexes) => {
 
 
 const handleMove = (gameState, index) => {
-  const { board, currentPlayer, gameOver, moveCount, moveHistory, winningIndexes } = gameState;
-  if (!gameOver && board[index] === '') {
-      const newBoard = makeMove(board, index, currentPlayer);
-      const newHistory = moveHistory.slice(0, moveCount+1);
-      const newMoveCounter = moveCount + 1;
-      const { winner, winningIndexes: newWinningIndexes } = checkWinner(newBoard, winningIndexes);
-      return {
-          board: newBoard,
-          currentPlayer: currentPlayer === 'X' ? 'O' : 'X',
-          moveCount: moveCount + 1,
-          moveHistory: [...newHistory, newBoard],
-          winner: winner,
-          gameOver: winner !== null || newMoveCounter === 9,
-          winningIndexes: newWinningIndexes
-      };
-  }
-  return gameState;
+    console.log("Handling move");
+    const { board, currentPlayer, gameOver, moveCount, moveHistory, winningIndexes } = gameState;
+    if (!gameOver && board[index] === '') {
+        const newBoard = makeMove(board, index, currentPlayer);
+        const newHistory = moveHistory.slice(0, moveCount+1);
+        const newMoveCounter = moveCount + 1;
+        const { winner, winningIndexes: newWinningIndexes } = checkWinner(newBoard, winningIndexes);
+        return {
+            board: newBoard,
+            currentPlayer: currentPlayer === 'X' ? 'O' : 'X',
+            moveCount: moveCount + 1,
+            moveHistory: [...newHistory, newBoard],
+            winner: winner,
+            gameOver: winner !== null || newMoveCounter === 9,
+            winningIndexes: newWinningIndexes
+        };
+    }
+    return gameState;
 };
 
 
 const handleNewGame = () => {
-  return initialState;
+    console.log("Starting new game");
+    return initialState;
 };
 
 const handleUndo = (gameState) => {
-  const { moveHistory, moveCount } = gameState;
-  if (moveHistory.length > 1) {
-      const prevBoard = moveHistory[moveCount - 1];
-      return {
-          ...gameState,
-          board: prevBoard,
-          currentPlayer: gameState.currentPlayer === 'X' ? 'O' : 'X',
-          moveCount: moveCount - 1,
-          winner: null,
-          gameOver: false,
-      };
-  }
-  return gameState;
+    console.log("Undoing move");
+    const { moveHistory, moveCount } = gameState;
+    if (moveHistory.length > 1) {
+        const prevBoard = moveHistory[moveCount - 1];
+        return {
+            ...gameState,
+            board: prevBoard,
+            currentPlayer: gameState.currentPlayer === 'X' ? 'O' : 'X',
+            moveCount: moveCount - 1,
+            winner: null,
+            gameOver: false,
+        };
+    }
+    return gameState;
 };
 
 const handleRedo = (gameState) => {
-  const { moveHistory, moveCount } = gameState;
-  if (moveHistory.length > 1) {
-      const nextBoard = moveHistory[moveCount + 1];
-      return {
-          ...gameState,
-          board: nextBoard,
-          currentPlayer: gameState.currentPlayer === 'X' ? 'O' : 'X',
-          moveCount: moveCount + 1,
-          winner: null,
-          gameOver: false,
-      };
-  }
-  return gameState;
+    console.log("Redoing move");
+    const { moveHistory, moveCount } = gameState;
+    if (moveHistory.length > 1) {
+        const nextBoard = moveHistory[moveCount + 1];
+        return {
+            ...gameState,
+            board: nextBoard,
+            currentPlayer: gameState.currentPlayer === 'X' ? 'O' : 'X',
+            moveCount: moveCount + 1,
+            winner: null,
+            gameOver: false,
+        };
+    }
+    return gameState;
 };
-
 
 export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo };

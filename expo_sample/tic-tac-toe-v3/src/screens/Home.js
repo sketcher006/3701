@@ -97,11 +97,11 @@ export default Home = function ({navigation}) {
                     <Button title='Credits' onPress={navToCredit} />
                 </View>
             </View>
-            <View style={styles.buttonsContainer}>
+            {/* <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
                     <Button title='Clr Data' onPress={handleClearClick} />
                 </View>
-            </View>  
+            </View>   */}
         </View>
     )
 }
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         margin: 20,
     },      
     gameBoard: { // the yellow part
-        margin: 20,
+        margin: 30,
     },
     buttonsContainer: {
         flexDirection: 'row',

@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const key = 'savedGames';
 
 async function handleSave(gameState) {
+    console.log("Saving game");
     try{
         // Retrieve current save game data
         const currentDataString = await AsyncStorage.getItem(key);
@@ -43,6 +44,7 @@ async function handleSave(gameState) {
 }
 
 const loadSaveGameData = async () => {
+    console.log("Loading all saved games...");
     try {
         const currentDataString = await AsyncStorage.getItem(key);
         const currentData = currentDataString ? JSON.parse(currentDataString) : { gameStates: [] };
@@ -60,6 +62,7 @@ const loadSaveGameData = async () => {
 }
 
 const deleteSave = async (id, setLoadData) => {
+    console.log("Deleting save game with id: ", id);
     try {
         const currentDataString = await AsyncStorage.getItem(key);
         const currentData = currentDataString ? JSON.parse(currentDataString) : { gameStates: [] };
@@ -105,12 +108,13 @@ const loadSave = async (id, updateGameState) => {
 }
 
 async function handleClear() {
+    console.log("Clearing all game data!");
     try {
         await AsyncStorage.removeItem(key);
-        console.log("Game cleared!");
+        console.log("Data cleared!");
     } catch (error) {
-        console.log("Error clearing game: ", error);
-        alert("Error clearing game: ", error)
+        console.log("Error clearing game data: ", error);
+        alert("Error clearing game data: ", error)
     }
 }
 

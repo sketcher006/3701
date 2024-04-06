@@ -14,14 +14,12 @@ export const fetchSavedGames = async (setLoadedData) => {
 
 export default Load = function ({navigation, route}){
     const { updateGameState } = route.params;
-    
-    const[loadedData, setLoadedData] = useState([]);
+    const [loadedData, setLoadedData] = useState([]);
+    const navToBack = () => navigation.goBack(); 
 
     useEffect(() => {
         fetchSavedGames(setLoadedData);
     }, []);
-
-    const navToBack = () => navigation.goBack(); 
     
     return (
         <View style={styles.container}>
@@ -41,7 +39,6 @@ export default Load = function ({navigation, route}){
                                 index={index} 
                                 update={updateGameState} 
                                 set={setLoadedData} 
-                                
                             />
                         )}
                         keyExtractor={(item, index) => index.toString()}
