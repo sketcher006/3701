@@ -1,31 +1,34 @@
-import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
-export default Credit = function ({navigation}){
+import { View, Text, StyleSheet, Button, ScrollView, FlatList } from "react-native";
+import { loadSaveGameData } from "../datamodel/storage";
+import { useState, useEffect } from "react";
+import LoadModule from "../components/LoadModule";
+import { deleteSave, loadSave } from "../datamodel/storage";
+
+export default Load = function ({navigation}){
     
-    const[loadedData, setLoadedData] = useState(null);
+    const[loadedData, setLoadedData] = useState([]);
 
-    const handleModalOpen = async (modalType) => {
-        if (modalType === "load") {
+
+    useEffect(() => {
+        const fetchSavedGames = async () => {
             try {
-                const loadedData = await handleLoadModal(); // returns object with previous saved game data
-                console.log("loadedData", loadedData);
-                console.log(typeof loadedData);
-                setLoadedData(loadedData);
-                // const formattedData = displaySavedData(loadedData);
-                // console.log("formattedData", formattedData);
-                setModalVisible("load");
-                // return formattedData;
+                const data = await loadSaveGameData();
+                console.log("Data:", data);
+                console.log("Data.gameStates:", data.gameStates.length);
+                console.log(typeof data.gameStates);
+                setLoadedData(data);
             } catch (error) {
-                console.log("Error loading game: ", error);
-                alert("Error loading game: ", error);
+                console.error("Error loading saved games:", error);
+                // Handle the error as needed
             }
-        } else {
-            setModalVisible(modalType);
-        }
-    };
+        };
+    
+        fetchSavedGames();
+    }, []);
+    
 
-    // I THINK THIS SHOULD ALL BE IN THE GAME OR STORAGE FILE, RENDER EVERYTHING INSIDE THE savedgamescontainer
-    // over there and then render it here on the load screen?
-    const navToBack = () => navigation.goBack();
+    const navToBack = () => navigation.goBack(); 
+    
     return (
         <View style={styles.container}>
             <View style={styles.headingContainer}>
@@ -33,35 +36,20 @@ export default Credit = function ({navigation}){
                     Load Game
                 </Text>
             </View>
-            <ScrollView style={styles.scrollView}>
-                <View>
+            
+            
                     <View style={styles.savedGamesContainer}>
-                        <View style={styles.singelGame}>
-                            <View style={styles.gameDetail}>
-                                <Text>Game details go here</Text>
-                                {loadedData && displaySavedData(loadedData)}
-                                <View style={styles.gameButtons}>
-                                    <View style={styles.buttons}>
-                                        <Button style={styles.buttons} title="Delete" onPress={navToBack} />
-                                    </View>
-                                    <View style={styles.buttons}>
-                                        <Button style={styles.buttons} title="Load" onPress={handleLoadClick()} />
-                                    </View>
-                                </View>
-
-                            </View>
-
-                        </View>
-
-                    </View>
-                    
-                    
-                    
-                    
-                    
-                </View>
-                
-            </ScrollView>
+                        <FlatList
+                            data={loadedData.gameStates}
+                            renderItem={({ item, index }) => (
+                                <LoadModule gameState={item} del={deleteSave} load={loadSave} index={index} />
+                            )}
+                            keyExtractor={(item, index) => index.toString()}
+                            style={styles.flatList}
+                        />
+                    </View>                    
+            
+            
             <View style={styles.buttons}>
                 <Button title='Back' onPress={navToBack}/>
             </View>
@@ -111,9 +99,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     buttons: {
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 10,
+        marginBottom: 10,
         width: 90,
         alignSelf: 'center',
     },

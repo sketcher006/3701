@@ -39,25 +39,9 @@ export default Home = function ({navigation}) {
         setGameState((prevState) => handleRedo(prevState));
     };
 
-    // const handleModalOpen = async (modalType) => {
-    //     if (modalType === "load") {
-    //         try {
-    //             const loadedData = await handleLoadModal(); // returns object with previous saved game data
-    //             console.log("loadedData", loadedData);
-    //             console.log(typeof loadedData);
-    //             setLoadedData(loadedData);
-    //             // const formattedData = displaySavedData(loadedData);
-    //             // console.log("formattedData", formattedData);
-    //             setModalVisible("load");
-    //             // return formattedData;
-    //         } catch (error) {
-    //             console.log("Error loading game: ", error);
-    //             alert("Error loading game: ", error);
-    //         }
-    //     } else {
-    //         setModalVisible(modalType);
-    //     }
-    // };
+    const handleModalOpen = async (modalType) => {
+        setModalVisible(modalType);
+    };
     
     return (
         <View style={styles.container}>
@@ -110,7 +94,7 @@ export default Home = function ({navigation}) {
                             <Text>Are you sure you want to save the game?</Text>
                             <View style={styles.buttonsContainer}>
                                 <View style={styles.buttons}>
-                                    <Button title="Save" onPress={() => {setModalVisible(null); handleSaveClick()}} />
+                                    <Button title="Save" onPress={() => { setModalVisible(null); handleSaveClick(); }} />
                                 </View>
                                 <View style={styles.buttons}>
                                     <Button title="Close" onPress={() => setModalVisible(null)} />
@@ -121,7 +105,7 @@ export default Home = function ({navigation}) {
                 </Modal>
 
                 <View style={styles.buttons}>
-                    <Button title="Load" onPress={navToLoad()} />
+                    <Button title="Load" onPress={navToLoad} />
                 </View>
                 
             </View>

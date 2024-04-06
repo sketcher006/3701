@@ -22,13 +22,22 @@ async function handleSave(gameState) {
         if (!currentData.hasOwnProperty('gameStates')) {
             currentData.gameStates = []; 
         }
+        
+        // add id to gamestate
+        gameState.id = currentData.gameStates.length > 0 ? currentData.gameStates[currentData.gameStates.length - 1].id + 1 : 1;
+        
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        const formattedTime = currentDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+        gameState.date = formattedDate;
+        gameState.time = formattedTime;
 
         console.log("currentData", currentData);
         console.log(typeof currentData);
         console.log("thisSave", gameState);
         console.log(typeof gameState); 
-
-        // Append new game data to the array of game states
+        
+        // Append new game data to the array of game states lit
         currentData.gameStates.push(gameState);
         console.log("----------");
         // save new game data
@@ -38,12 +47,58 @@ async function handleSave(gameState) {
             await AsyncStorage.setItem(key, strData);
             console.log("Game saved!");
         } catch (e) {
-            console.log("Error saving game: ", e);
+            console.log("Error saving new game: ", e);
             alert("Error saving game: ", e)
         } 
     } catch (e){
         console.log("Error saving game: ", e);
         alert("Error saving game: ", e)
+    }
+}
+
+const loadSaveGameData = async () => {
+    console.log("loadSaveGameData!!!!!!!!----------------")
+    try {
+        const currentDataString = await AsyncStorage.getItem(key);
+        const currentData = currentDataString ? JSON.parse(currentDataString) : { gameStates: [] };
+        if (currentData !== null) {
+            console.log("Loaded data:", currentData);
+            return currentData;
+        } else {
+            console.log("No saved game data found.");
+            return currentData; // or return an empty array/object as needed
+        }
+    } catch (error) {
+        console.log("Error loading game:", error);
+        alert("Error loading game: " + error.message);
+        return []; // or handle the error in some other way
+    }
+}
+
+const deleteSave = async (id) => {
+    console.log("Deleting save game with id: ", id);
+}
+
+const loadSave = async (id) => {
+    console.log("Loading save game with id: ", id);
+    try {
+        const currentDataString = await AsyncStorage.getItem(key);
+        const currentData = currentDataString ? JSON.parse(currentDataString) : { gameStates: [] };
+        if (currentData !== null) {
+            console.log("Loaded data:", currentData);
+            const saveGameSingle = currentData.gameStates.find(game => game.id === id);
+            console.log("Loaded single game:", saveGameSingle);
+            // set the gameState to the loaded game
+            return saveGameSingle;
+        } else {
+            console.log("No saved game data found.");
+            return currentData; // or return an empty array/object as needed
+        }
+    
+    } catch (error) {
+        console.log("Error loading game:", error);
+        alert("Error loading game: " + error.message);
+        return []; // or handle the error in some other way
     }
 }
 
@@ -90,27 +145,6 @@ async function handleLoadModal() {
 //     }
 // }
 
-
-// async function handleLoad() {
-//     // need to determine which element to load
-//     try {
-//         const strData = await AsyncStorage.getItem(key);
-//         console.log("saved data loading:", strData)
-//         if (strData !== null) {
-//             console.log("Game loaded!");
-//             const gameData = JSON.parse(strData);
-//             console.log("loaded data:", gameData);
-//             return JSON.parse(strData);
-//         } else {
-//             console.log("No saved game found.");
-//             return {};
-//         }
-//     } catch (e) {
-//         console.log("Error loading game: ", e);
-//         return {};
-//     }
-// }
-
 async function handleClear() {
     try {
         await AsyncStorage.removeItem(key);
@@ -121,4 +155,4 @@ async function handleClear() {
     }
 }
 
-export { handleSave, handleClear, handleLoadModal};
+export { handleSave, handleClear, handleLoadModal, loadSaveGameData, deleteSave, loadSave};

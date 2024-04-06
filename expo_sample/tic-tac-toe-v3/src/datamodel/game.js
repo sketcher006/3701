@@ -122,10 +122,26 @@ const handleRedo = (gameState) => {
   return gameState;
 };
 
+const deleteSave = async (id) => {
+    console.log("trying to savegame task with id: ", id);
+    // retrieve stored tasks from async storage
+    try {
+        const saveString = await AsyncStorage.getItem(key);
+        const saveArray = JSON.parse(saveString);
+        // remove the save game with the given index
+        const newTasksArray = tasksArray.filter(t => t.id !== id);
+        // save the updated tasks back to async storage
+        await AsyncStorage.setItem('tasks', JSON.stringify(newTasksArray));
+    } catch (error) {
+        console.log("Error deleting task: ", error);
+        alert("Error deleting task. Please try again. " + error.message);
+    } 
+};
+
 const displaySavedData = (loadedData) => {
     console.log("(displaySavedData)loaded data:", loadedData);
     console.log("(displaySavedData)loaded data type:", typeof loadedData);
-    console.log("(displaySavedData)loaded data length:", loadedData.length);
+    console.log("(displaySavedData)loaded data length:", loadedData.length); 
 
     // map over the loaded data and display it in the modal
     loadedData.gameStates.map((state, index) => {
@@ -167,4 +183,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo, displaySavedData};
+export { initialState, makeMove, checkWinner, handleMove, handleNewGame, handleUndo, handleRedo, displaySavedData };
