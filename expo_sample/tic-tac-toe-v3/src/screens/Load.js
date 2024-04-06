@@ -1,8 +1,19 @@
-import { View, Text, StyleSheet, Button, ScrollView, FlatList } from "react-native";
-import { loadSaveGameData } from "../datamodel/storage";
 import { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Button, ScrollView, FlatList } from "react-native";
+import { loadSaveGameData, deleteSave, loadSave } from "../datamodel/storage";
 import LoadModule from "../components/LoadModule";
-import { deleteSave, loadSave } from "../datamodel/storage";
+
+export const fetchSavedGames = async (setLoadedData) => {
+    try {
+        const data = await loadSaveGameData();
+        console.log("ICARE___Data:", data);
+        console.log("ICARE___Data.gameStates:", data.gameStates.length);
+        console.log(typeof data.gameStates);
+        setLoadedData(data);
+    } catch (error) {
+        console.error("Error loading saved games:", error);
+    }
+};
 
 export default Load = function ({navigation, route}){
     const { updateGameState } = route.params;
@@ -11,21 +22,10 @@ export default Load = function ({navigation, route}){
 
 
     useEffect(() => {
-        const fetchSavedGames = async () => {
-            try {
-                const data = await loadSaveGameData();
-                console.log("Data:", data);
-                console.log("Data.gameStates:", data.gameStates.length);
-                console.log(typeof data.gameStates);
-                setLoadedData(data);
-            } catch (error) {
-                console.error("Error loading saved games:", error);
-            }
-        };
-    
-        fetchSavedGames();
+        fetchSavedGames(setLoadedData);
     }, []);
     
+
 
     const navToBack = () => navigation.goBack(); 
     
@@ -42,7 +42,15 @@ export default Load = function ({navigation, route}){
                         <FlatList
                             data={loadedData.gameStates}
                             renderItem={({ item, index }) => (
-                                <LoadModule gameState={item} del={deleteSave} load={loadSave} index={index} update={updateGameState} />
+                                <LoadModule 
+                                    gameState={item} 
+                                    del={deleteSave} 
+                                    load={loadSave} 
+                                    index={index} 
+                                    update={updateGameState} 
+                                    set={setLoadedData} 
+                                    
+                                />
                             )}
                             keyExtractor={(item, index) => index.toString()}
                             style={styles.flatList}
@@ -55,6 +63,7 @@ export default Load = function ({navigation, route}){
             </View>
         </View>
     )
+    
 }
 
 const styles = StyleSheet.create({
@@ -109,27 +118,3 @@ const styles = StyleSheet.create({
     }
 })
 
-
-// <Modal
-//                     animationType="fade"
-//                     transparent={true}
-//                     visible={modalVisible === "load"}
-//                     onRequestClose={() => {
-//                         setModalVisible(null);
-//                     }}
-//                 >
-//                     <View style={styles.modalPopUp}>
-//                         <Text style={styles.modalHeading}>Load Game</Text>
-//                         <View style={styles.modalMessageBox}>
-//                             {loadedData && displaySavedData(loadedData)}
-//                             <View style={styles.buttonsContainer}>
-//                                 <View style={styles.buttons}>
-//                                     <Button title="Close" onPress={() => setModalVisible(null)} />
-//                                 </View>
-//                             </View>
-//                         </View>
-//                     </View>
-//                 </Modal>
-//                     {/* <Button title='Load' onPress={handleLoadClick}>
-//                         Load game
-//                     </Button> */}

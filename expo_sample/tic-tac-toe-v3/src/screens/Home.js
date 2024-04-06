@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Modal } from "react-native";
 import { initialState, handleMove, handleNewGame, handleUndo, handleRedo, displaySavedData } from '../datamodel/game';
-import { handleSave, handleLoad, handleClear, handleLoadModal } from '../datamodel/storage';
+import { handleSave, handleClear, handleLoadModal } from '../datamodel/storage';
 import Board from '../components/Board';
 
 export default Home = function ({navigation}) {
     const[gameState, setGameState] = useState(initialState);
     const[modalVisible, setModalVisible] = useState(false);
-    // const[loadedData, setLoadedData] = useState(null);
+    
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
     const navToLoad = () => {

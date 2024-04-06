@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import game, { initialState } from './game';
 
 const key = 'savedGames';
 const dummyData = {
@@ -33,6 +32,7 @@ async function handleSave(gameState) {
         gameState.time = formattedTime;
 
         console.log("currentData", currentData);
+        console.log("CURRENT DATA SIZE:", currentData.gameStates.length);
         console.log(typeof currentData);
         console.log("thisSave", gameState);
         console.log(typeof gameState); 
@@ -62,7 +62,7 @@ const loadSaveGameData = async () => {
         const currentDataString = await AsyncStorage.getItem(key);
         const currentData = currentDataString ? JSON.parse(currentDataString) : { gameStates: [] };
         if (currentData !== null) {
-            console.log("Loaded data:", currentData);
+            console.log("Loaded data::::", currentData);
             return currentData;
         } else {
             console.log("No saved game data found.");
@@ -75,22 +75,30 @@ const loadSaveGameData = async () => {
     }
 }
 
-const deleteSave = async (id, updateGameState) => {
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+const deleteSave = async (id, setLoadData) => {
     console.log("Deleting save game with id:", id);
     try {
         const currentDataString = await AsyncStorage.getItem(key);
         const currentData = currentDataString ? JSON.parse(currentDataString) : { gameStates: [] };
         
         if (currentData !== null) {
-            console.log("Loaded data:", currentData);
+            console.log("???Loaded data:", currentData);
             // Filter out the game save with the specified id
             const updatedGameStates = currentData.gameStates.filter(game => game.id !== id);
             // Update the gameStates with the filtered array
             currentData.gameStates = updatedGameStates;
-            // Save the updated data back to AsyncStorage
+            // Save the updated data back to AsyncStorage 
             await AsyncStorage.setItem(key, JSON.stringify(currentData));
-            // Optionally update the local state if needed
-            // updateGameState(updatedGameStates);
+            // Update the local state 
+            console.log("CURRENTDATA: ", currentData);
+            console.log("type: ", typeof currentData);
+            //setLoadedData(currentData); // <---- this is deleting the last game in the list everytime
+            setLoadData(currentData);
+            
         } else {
             console.log("No saved game data found.");
         }
@@ -100,6 +108,10 @@ const deleteSave = async (id, updateGameState) => {
         alert("Error deleting game: " + error.message);
     }
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 const loadSave = async (id, updateGameState) => {
     console.log("Loading save game with id: ", id);
@@ -125,27 +137,7 @@ const loadSave = async (id, updateGameState) => {
     }
 }
 
-// the purpose of this function should be to load the saved game data and display it in the modal, 
-// or at least return the data in a way the modal can display it
-async function handleLoadModal() {
-    console.log("----------this is where it starts----------");
-    try {
-        const strData = await AsyncStorage.getItem(key);
-        console.log("saved data loading:", strData)
-        if (strData !== null) {
-            console.log("Game data loaded!");
-            const gameData = JSON.parse(strData);
-            console.log("loaded data:", gameData);
-            return gameData;
-        } else {
-            console.log("No saved game found.");
-            return null;
-        }
-    } catch (error) {
-        console.log("Error loading game: ", error);
-        return null;
-    }
-}
+
 
 // async function handleLoad() {
 //     try {
@@ -178,4 +170,4 @@ async function handleClear() {
     }
 }
 
-export { handleSave, handleClear, handleLoadModal, loadSaveGameData, deleteSave, loadSave};
+export { handleSave, handleClear, loadSaveGameData, deleteSave, loadSave};

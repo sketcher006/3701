@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 
-export default LoadModule = function({gameState, index, del, load, update}) {   
+export default LoadModule = function({gameState, index, del, load, update, set}) {   
     const navigation = useNavigation();
     const {id, winner, moveHistory, time, date} = gameState;
   
@@ -29,7 +29,7 @@ export default LoadModule = function({gameState, index, del, load, update}) {
             <View>
                 <View style={styles.footer}>
                     <View style={styles.leftFoot}>
-                        <Button title='Delete' onPress={() => del(id, update)} />
+                        <Button title='Delete' onPress={() => del(id, set)} />
                     </View>
                     <View style={styles.middleFoot}>
                     </View>
