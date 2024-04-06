@@ -11,7 +11,9 @@ export default Home = function ({navigation}) {
     // const[loadedData, setLoadedData] = useState(null);
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
-    const navToLoad = () => navigation.navigate('Load');
+    const navToLoad = () => {
+        navigation.navigate('Load', {updateGameState});
+    }
 
     const handleSaveClick = () => {
         handleSave(gameState);
@@ -21,27 +23,31 @@ export default Home = function ({navigation}) {
         handleClear();
     };
     
-    const { board, moveCount, winner, moveHistory, winningIndexes } = gameState;
-
     const handleMoveClick = (index) => {
         setGameState((prevState) => handleMove(prevState, index));
     };
-
+    
     const handleNewGameClick = () => {
         setGameState(handleNewGame());
     };
-
+    
     const handleUndoClick = () => {
         setGameState((prevState) => handleUndo(prevState));
     };
-
+    
     const handleRedoClick = () => {
         setGameState((prevState) => handleRedo(prevState));
     };
-
+    
     const handleModalOpen = async (modalType) => {
         setModalVisible(modalType);
     };
+
+    const updateGameState = (newState) => {
+        setGameState(newState);
+    };
+
+    const { board, moveCount, winner, moveHistory, winningIndexes } = gameState;
     
     return (
         <View style={styles.container}>

@@ -1,9 +1,12 @@
 // LoadModule.js
 import { Button } from 'react-native';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-export default LoadModule = function({gameState, index, del, load}) {   
+
+export default LoadModule = function({gameState, index, del, load, update}) {   
+    const navigation = useNavigation();
     const {id, winner, moveHistory, time, date} = gameState;
   
     return (
@@ -26,13 +29,16 @@ export default LoadModule = function({gameState, index, del, load}) {
             <View>
                 <View style={styles.footer}>
                     <View style={styles.leftFoot}>
-                        <Button title='Delete' onPress={() => del(id)} />
+                        <Button title='Delete' onPress={() => del(id, update)} />
                     </View>
                     <View style={styles.middleFoot}>
                     </View>
                     <View style={styles.rightFoot}>
                         <View>
-                            <Button title='Load' onPress={() => load(id)} />
+                            <Button title='Load' onPress={() => {
+                                load(id, update);
+                                navigation.goBack();
+                            }} />
                         </View>
                     </View>
                 </View>

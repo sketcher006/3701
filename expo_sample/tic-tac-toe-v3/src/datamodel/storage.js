@@ -75,11 +75,33 @@ const loadSaveGameData = async () => {
     }
 }
 
-const deleteSave = async (id) => {
-    console.log("Deleting save game with id: ", id);
+const deleteSave = async (id, updateGameState) => {
+    console.log("Deleting save game with id:", id);
+    try {
+        const currentDataString = await AsyncStorage.getItem(key);
+        const currentData = currentDataString ? JSON.parse(currentDataString) : { gameStates: [] };
+        
+        if (currentData !== null) {
+            console.log("Loaded data:", currentData);
+            // Filter out the game save with the specified id
+            const updatedGameStates = currentData.gameStates.filter(game => game.id !== id);
+            // Update the gameStates with the filtered array
+            currentData.gameStates = updatedGameStates;
+            // Save the updated data back to AsyncStorage
+            await AsyncStorage.setItem(key, JSON.stringify(currentData));
+            // Optionally update the local state if needed
+            // updateGameState(updatedGameStates);
+        } else {
+            console.log("No saved game data found.");
+        }
+    
+    } catch (error) {
+        console.log("Error deleting game:", error);
+        alert("Error deleting game: " + error.message);
+    }
 }
 
-const loadSave = async (id) => {
+const loadSave = async (id, updateGameState) => {
     console.log("Loading save game with id: ", id);
     try {
         const currentDataString = await AsyncStorage.getItem(key);
@@ -89,6 +111,7 @@ const loadSave = async (id) => {
             const saveGameSingle = currentData.gameStates.find(game => game.id === id);
             console.log("Loaded single game:", saveGameSingle);
             // set the gameState to the loaded game
+            updateGameState(saveGameSingle);
             return saveGameSingle;
         } else {
             console.log("No saved game data found.");

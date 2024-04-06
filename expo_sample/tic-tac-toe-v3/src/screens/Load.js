@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import LoadModule from "../components/LoadModule";
 import { deleteSave, loadSave } from "../datamodel/storage";
 
-export default Load = function ({navigation}){
+export default Load = function ({navigation, route}){
+    const { updateGameState } = route.params;
     
     const[loadedData, setLoadedData] = useState([]);
 
@@ -19,7 +20,6 @@ export default Load = function ({navigation}){
                 setLoadedData(data);
             } catch (error) {
                 console.error("Error loading saved games:", error);
-                // Handle the error as needed
             }
         };
     
@@ -42,7 +42,7 @@ export default Load = function ({navigation}){
                         <FlatList
                             data={loadedData.gameStates}
                             renderItem={({ item, index }) => (
-                                <LoadModule gameState={item} del={deleteSave} load={loadSave} index={index} />
+                                <LoadModule gameState={item} del={deleteSave} load={loadSave} index={index} update={updateGameState} />
                             )}
                             keyExtractor={(item, index) => index.toString()}
                             style={styles.flatList}
