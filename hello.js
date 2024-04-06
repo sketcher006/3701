@@ -479,3 +479,51 @@ function Person(initialName, initialAge) {
 const person = new Person("john", 25);
 console.log(person.getName);
 console.log(person.getAge);
+
+let cart = {};
+
+addItem = (id, name, price) => {
+  console.log("adding: ", id, name, price);
+  if(cart[id]){
+    console.log("true: ", cart[id]);
+    console.log("cart[id].quantity: ", cart[id].quantity);
+    cart[id].quantity++;
+    console.log("cart[id].quantity: ", cart[id].quantity);
+  }
+  else{
+    console.log("false: ", cart[id]);
+    cart[id] = {name, price, quantity: 1};
+    console.log("cart[id].quantity: ", cart[id].quantity);
+  }
+}
+
+removeItem = (id) => {
+  if (cart[id]) {
+    cart[id].quantity--;
+    if (cart[id].quantity === 0) {
+      delete cart[id];
+    }
+  }
+};
+getTotalPrice = (cart) => {
+  let totalPrice = 0;
+  for (let id in cart) {
+    totalPrice += cart[id].price * cart[id].quantity;
+  }
+  return totalPrice;
+};
+getItemNumber = (cart) => {
+  let itemNumber = 0;
+  for (let id in cart) {
+    itemNumber += cart[id].quantity;
+  }
+  return itemNumber;
+};
+
+addItem(1, "Apple", 0.99);
+addItem(2, "Banana", 0.59);
+addItem(1, "Apple", 0.99); // Quantity of Apple should now be 2
+console.log(getTotalPrice(cart));
+console.log(getItemNumber(cart));
+removeItem(1); // Quantity of Apple should decrease to 1
+console.log(cart[1].quantity);
