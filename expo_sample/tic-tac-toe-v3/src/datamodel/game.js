@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, Modal } from "react-native";
+// game.js
 
 const initialState = {
     board: ['', '', '', '', '', '', '', '', ''], // game board

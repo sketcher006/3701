@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button, ScrollView, FlatList } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList } from "react-native";
 import { loadSaveGameData, deleteSave, loadSave } from "../datamodel/storage";
 import LoadModule from "../components/LoadModule";
 
 export const fetchSavedGames = async (setLoadedData) => {
     try {
         const data = await loadSaveGameData();
-        console.log("ICARE___Data:", data);
-        console.log("ICARE___Data.gameStates:", data.gameStates.length);
-        console.log(typeof data.gameStates);
         setLoadedData(data);
     } catch (error) {
         console.error("Error loading saved games:", error);
@@ -20,12 +17,9 @@ export default Load = function ({navigation, route}){
     
     const[loadedData, setLoadedData] = useState([]);
 
-
     useEffect(() => {
         fetchSavedGames(setLoadedData);
     }, []);
-    
-
 
     const navToBack = () => navigation.goBack(); 
     
@@ -36,34 +30,29 @@ export default Load = function ({navigation, route}){
                     Load Game
                 </Text>
             </View>
-            
-            
-                    <View style={styles.savedGamesContainer}>
-                        <FlatList
-                            data={loadedData.gameStates}
-                            renderItem={({ item, index }) => (
-                                <LoadModule 
-                                    gameState={item} 
-                                    del={deleteSave} 
-                                    load={loadSave} 
-                                    index={index} 
-                                    update={updateGameState} 
-                                    set={setLoadedData} 
-                                    
-                                />
-                            )}
-                            keyExtractor={(item, index) => index.toString()}
-                            style={styles.flatList}
-                        />
-                    </View>                    
-            
-            
+                <View style={styles.savedGamesContainer}>
+                    <FlatList
+                        data={loadedData.gameStates}
+                        renderItem={({ item, index }) => (
+                            <LoadModule 
+                                gameState={item} 
+                                del={deleteSave} 
+                                load={loadSave} 
+                                index={index} 
+                                update={updateGameState} 
+                                set={setLoadedData} 
+                                
+                            />
+                        )}
+                        keyExtractor={(item, index) => index.toString()}
+                        style={styles.flatList}
+                    />
+                </View>                                
             <View style={styles.buttons}>
                 <Button title='Back' onPress={navToBack}/>
             </View>
         </View>
     )
-    
 }
 
 const styles = StyleSheet.create({

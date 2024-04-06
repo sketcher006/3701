@@ -1,8 +1,8 @@
 // Home.js
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { View, Text, StyleSheet, Button, Modal } from "react-native";
-import { initialState, handleMove, handleNewGame, handleUndo, handleRedo, displaySavedData } from '../datamodel/game';
-import { handleSave, handleClear, handleLoadModal } from '../datamodel/storage';
+import { initialState, handleMove, handleNewGame, handleUndo, handleRedo } from '../datamodel/game';
+import { handleSave, handleClear } from '../datamodel/storage';
 import Board from '../components/Board';
 
 export default Home = function ({navigation}) {
@@ -11,42 +11,16 @@ export default Home = function ({navigation}) {
     
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
-    const navToLoad = () => {
-        navigation.navigate('Load', {updateGameState});
-    }
-
-    const handleSaveClick = () => {
-        handleSave(gameState);
-    };
-
-    const handleClearClick = () => {
-        handleClear();
-    };
+    const navToLoad = () => navigation.navigate('Load', {updateGameState});
+    const handleSaveClick = () => handleSave(gameState);
+    const handleClearClick = () => handleClear();
+    const handleMoveClick = (index) => setGameState((prevState) => handleMove(prevState, index));
+    const handleNewGameClick = () => setGameState(handleNewGame());
+    const handleUndoClick = () => setGameState((prevState) => handleUndo(prevState));
+    const handleRedoClick = () => setGameState((nextState) => handleRedo(nextState));
+    const handleModalOpen = async (modalType) => setModalVisible(modalType);
+    const updateGameState = (newState) => setGameState(newState);
     
-    const handleMoveClick = (index) => {
-        setGameState((prevState) => handleMove(prevState, index));
-    };
-    
-    const handleNewGameClick = () => {
-        setGameState(handleNewGame());
-    };
-    
-    const handleUndoClick = () => {
-        setGameState((prevState) => handleUndo(prevState));
-    };
-    
-    const handleRedoClick = () => {
-        setGameState((prevState) => handleRedo(prevState));
-    };
-    
-    const handleModalOpen = async (modalType) => {
-        setModalVisible(modalType);
-    };
-
-    const updateGameState = (newState) => {
-        setGameState(newState);
-    };
-
     const { board, moveCount, winner, moveHistory, winningIndexes } = gameState;
     
     return (
@@ -113,35 +87,21 @@ export default Home = function ({navigation}) {
                 <View style={styles.buttons}>
                     <Button title="Load" onPress={navToLoad} />
                 </View>
-                
             </View>
 
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
-                    <Button title='Rules' onPress={navToRules}>
-                        Go to rules
-                    </Button>
+                    <Button title='Rules' onPress={navToRules} />
                 </View>
-
                 <View style={styles.buttons}>
-                    <Button title='Credits' onPress={navToCredit}>
-                        Go to credits
-                    </Button>
+                    <Button title='Credits' onPress={navToCredit} />
                 </View>
-
             </View>
-
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
-                    <Button title='Clr Data' onPress={handleClearClick}>
-                        Go to credits
-                    </Button>
+                    <Button title='Clr Data' onPress={handleClearClick} />
                 </View>
-
             </View>  
-
-
-
         </View>
     )
 }

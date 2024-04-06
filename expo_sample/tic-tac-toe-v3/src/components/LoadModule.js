@@ -2,8 +2,6 @@
 import { Button } from 'react-native';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/AntDesign';
-
 
 export default LoadModule = function({gameState, index, del, load, update, set}) {   
     const navigation = useNavigation();
@@ -46,7 +44,6 @@ export default LoadModule = function({gameState, index, del, load, update, set})
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     leftFoot: {
