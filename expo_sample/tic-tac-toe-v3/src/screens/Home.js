@@ -21,7 +21,7 @@ export default Home = function ({navigation}) {
     const handleModalOpen = async (modalType) => setModalVisible(modalType);
     const updateGameState = (newState) => setGameState(newState);
     
-    const { board, moveCount, winner, moveHistory, winningIndexes } = gameState;
+    const { board, moveCount, winner, moveHistory, winningIndexes, gameOver } = gameState;
     
     return (
         <View style={styles.container}>
@@ -59,7 +59,7 @@ export default Home = function ({navigation}) {
 
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttons}>
-                    <Button title="Save" onPress={() => handleModalOpen("save")} />
+                    <Button title="Save" onPress={() => handleModalOpen("save")} disabled={gameOver == false || (winner == "Tie!" && moveCount < 9)} />
                 </View>
                 <Modal
                     animationType="fade"
