@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initialState } from './game';
 
 const key = 'savedGames';
 
-async function handleSave(gameState) {
+async function handleSave(gameState, updateGameState) {
     console.log("Saving game");
     try{
         // Retrieve current save game data
@@ -33,6 +34,7 @@ async function handleSave(gameState) {
         try {
             await AsyncStorage.setItem(key, strData);
             console.log("Game saved!");
+            updateGameState(initialState);
         } catch (error) {
             console.log("Error saving new game: " + error);
             alert("Error saving game: " + error)

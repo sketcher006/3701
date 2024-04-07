@@ -12,7 +12,7 @@ export default Home = function ({navigation}) {
     const navToRules = () => navigation.navigate('Rules');
     const navToCredit = () => navigation.navigate('Credit');
     const navToLoad = () => navigation.navigate('Load', {updateGameState});
-    const handleSaveClick = () => handleSave(gameState);
+    const handleSaveClick = () => handleSave(gameState, setGameState);
     const handleClearClick = () => handleClear();
     const handleMoveClick = (index) => setGameState((prevState) => handleMove(prevState, index));
     const handleNewGameClick = () => setGameState(handleNewGame());
