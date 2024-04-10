@@ -16,8 +16,8 @@ export default Home = function ({navigation}) {
     const handleClearClick = () => handleClear();
     const handleMoveClick = (index) => setGameState((prevState) => handleMove(prevState, index));
     const handleNewGameClick = () => setGameState(handleNewGame());
-    const handleUndoClick = () => setGameState((prevState) => handleUndo(prevState));
-    const handleRedoClick = () => setGameState((nextState) => handleRedo(nextState));
+    const handleUndoClick = () => setGameState((gameState) => handleUndo(gameState));
+    const handleRedoClick = () => setGameState((gameState) => handleRedo(gameState));
     const handleModalOpen = async (modalType) => setModalVisible(modalType);
     const updateGameState = (newState) => setGameState(newState);
     

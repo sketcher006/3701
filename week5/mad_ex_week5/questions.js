@@ -215,47 +215,39 @@ Array.prototype.deserialize = function (json) {
  */
 
 function createShoppingCart() {
-  let cart = {};
+  let items = [];
 
   return {
-    addItem: (id, name, price) => {
-      console.log("adding: ", id, name, price);
-      if (cart[id]) {
-        cart[id].quantity++;
-      } else {
-        cart[id] = { name, price, quantity: 1 };
-      }
+    addItem: function (id, name, price) {
+      let item = items.find(item => item.id == id);
+      if (item) {
+        item.quantity++;
+        return;
+      } 
+      items.push({id, name, price, quantity: 1 });
     },
-    removeItem: (id) => {
-      if (cart[id]) {
-        cart[id].quantity--;
-        if (cart[id].quantity === 0) {
-          delete cart[id];
+    removeItem: function(id) {
+      let item = items.find(item => item.id == id);
+      if (item) {
+        item.quantity--;
+        if (item.quantity === 0) {
+          items = items.filter(item => item.id !== id);
         }
       }
     },
-    check: () => { 
-      let totalPrice = 0;
-      let itemNumber = 0;
-      let items = [];
-      for (let id in cart) {
-        totalPrice += cart[id].price * cart[id].quantity;
-        itemNumber += cart[id].quantity;
-        items.push({ id, ...cart[id] });
-      }
-      return { itemNumber, totalPrice, items };
+    check: function() {
+      let itemNumber = items.reduce((total, item) => total + item.quantity, 0);
+      let total = items.reduce((total, item) => total + item.price * item.quantity, 0);
+      return { itemNumber, total, items };
     },
-    getTotalPrice: () => {
-      return Object.values(cart).reduce((total, item) => {
-        return total + item.price * item.quantity;
-      }, 0);
+    get totalPrice() {
+      // Total price of all items.
+      return items.reduce((total, item) => total + item.price * item.quantity, 0);
     },
-    getItemNumber: () => {
-      return Object.values(cart).reduce((total, item) => {
-        return total + item.quantity;
-      }, 0);
-    },
-    
+    get itemNumber() {
+      // Total number of items.
+      return items.reduce((total, item) => total + item.quantity, 0);
+    }
   };
 }
 
