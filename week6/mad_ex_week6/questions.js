@@ -88,7 +88,27 @@ function findWordsWithPattern(str) {
 // ]
 function formatProductNames(products) {
   // Write your implementation
+  const formattedProducts = products.map(product => {
+    // Remove anything other than letters and numbers and split the product name into a words array
+    const words = product.replace(/[^a-zA-Z0-9 ]/g, '').split(' ');
+  
+    // Joining the words with the first word in lowercase and the rest upper
+    const idWords = words.map((word, index) => {
+      return index === 0 ? word.toLowerCase() : word[0].toUpperCase() + word.slice(1).toLowerCase();
+    });
+    console.log("idWords: ", idWords);
+    const id = idWords.join('');
+  
+    // Step 3: Create the title by capitalizing the first letter of each word
+    const title = product.split(' ').map(word => word[0].toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+  
+    // Step 4: Return an object with the formatted ID and title
+    return { id, title };
+  });
+  
+  return formattedProducts;
 }
+
 
 // Question 4: Write an asynchronous function `getCategories` that retrieves a list of categories from the Fake Store API.
 // The function should make a network request to 'https://fakestoreapi.com/products/categories' and return an array of category strings provided by the API.
@@ -96,17 +116,50 @@ function formatProductNames(products) {
 // Note: you can find the api documents at: https://fakestoreapi.com/docs
 async function getCategories() {
   // Write your implementation
+  try {
+    const response = await fetch('https://fakestoreapi.com/products/categories');
+    const categories = await response.json();
+    // console.log(categories);
+    return categories;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
 
-// Question 5: Write an asynchronous function `getGoodProducts` that retrieves products from a specified category with a rating equal to or higher than a given minimum.
+// Question 5: Write an asynchronous function `getGoodProducts` that retrieves products from a specified 
+// category with a rating equal to or higher than a given minimum.
 // This function should take two parameters: `category` (a string) and `minRate` (a number).
-// Make a network request to 'https://fakestoreapi.com/products/' and filter the results to include only those products that match the category and have a rating greater or equal to `minRate`.
+// Make a network request to 'https://fakestoreapi.com/products/' and filter the results to include only those 
+// products that match the category and have a rating greater or equal to `minRate`.
 // The function should return an array of objects, each containing 'id', 'rate', 'title', and 'price' of the product.
 // You should use high order array function map and filter.
 // Note: you can find the api documents at: https://fakestoreapi.com/docs
 async function getGoodProducts(category, minRate) {
   // Write your implementation
-}
+  try {
+    const fetchStr = 'https://fakestoreapi.com/products/' + 'category/' + category;
+    // console.log("fetchStr: ", fetchStr);
+    const response = await fetch(fetchStr);
+    const categories = await response.json();
+    // console.log("all cats: ", categories);
+    const filteredCategories = categories.filter(product => product.rating.rate >= minRate);
+    // console.log("filtered: ", filteredCategories);
+    const goodProducts = filteredCategories.map(product => {
+      return {
+        id: product.id,
+        rate: product.rating.rate,
+        title: product.title,
+        price: product.price,
+      };
+    });
+    // console.log("goodProducts: ", goodProducts);
+    return goodProducts;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 
 module.exports = {
   containDigit,
