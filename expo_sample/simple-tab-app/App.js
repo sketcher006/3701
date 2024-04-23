@@ -8,6 +8,7 @@ import { Other } from './src/pages/Other';
 const Tabs = createBottomTabNavigator();
 
 export default function App() {
+  const num = 0;
   return (
     <NavigationContainer>
       <Tabs.Navigator>
@@ -24,15 +25,16 @@ export default function App() {
           component={Member} 
           options={{
             tabBarIcon: ({size, color}) => (
-              <Ionicons name="accessibility-outline" size={size} color={color} />
+              <Ionicons name="accessibility" size={size} color={color} />
             ),
+            tabBarBadge: num || null,
             }} />
         <Tabs.Screen 
           name="Other" 
           component={Other} 
           options={{
             tabBarIcon: ({size, color}) => (
-              <Ionicons name="send-outline" size={size} color={color} />
+              <Ionicons name="send" size={size} color={color} />
             ),
             }} />
       </Tabs.Navigator>
