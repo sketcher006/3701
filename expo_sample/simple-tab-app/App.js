@@ -1,20 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import { Home } from './src/pages/Home';
+import { Member } from './src/pages/Member';
+import { Other } from './src/pages/Other';
+
+const Tabs = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tabs.Navigator>
+        <Tabs.Screen 
+          name="Home" 
+          component={Home}
+          options={{
+            tabBarIcon: ({size, color}) => (
+              <Ionicons name="home" size={size} color={color} />
+            ),
+            }} />
+        <Tabs.Screen 
+          name="Member" 
+          component={Member} 
+          options={{
+            tabBarIcon: ({size, color}) => (
+              <Ionicons name="accessibility-outline" size={size} color={color} />
+            ),
+            }} />
+        <Tabs.Screen 
+          name="Other" 
+          component={Other} 
+          options={{
+            tabBarIcon: ({size, color}) => (
+              <Ionicons name="send-outline" size={size} color={color} />
+            ),
+            }} />
+      </Tabs.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
