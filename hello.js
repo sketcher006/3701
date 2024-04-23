@@ -311,19 +311,19 @@ const selectStudents = [
   },
 ];
 
-// Exercise 1
-let data = "hello";
-// Your implementation here
-function processData(data, callback) {
-  setTimeout(() => {
-    let new_data = data.toUpperCase()
-    callback(new_data);
-  }, 500);
-}
+// // Exercise 1
+// let data = "hello";
+// // Your implementation here
+// function processData(data, callback) {
+//   setTimeout(() => {
+//     let new_data = data.toUpperCase()
+//     callback(new_data);
+//   }, 500);
+// }
 
-processData(data, (new_data) => {
-  console.log(new_data);
-});
+// processData(data, (new_data) => {
+//   console.log(new_data);
+// });
 
 
 
@@ -527,3 +527,50 @@ console.log(getTotalPrice(cart));
 console.log(getItemNumber(cart));
 removeItem(1); // Quantity of Apple should decrease to 1
 console.log(cart[1].quantity);
+
+
+function abbreviateName(name) {
+  // Implementation using regular expression
+  // return name.match(/\b[jJ]\w*\b/g) // starts with J or j
+  // return /^(?=.*J)(?=.*e).*$/.test(name); // has J and e
+  // return /^(?=.*J)(?=.*e).{16,}$/.test(name); // has J and e and at least 16 characters
+  // $& = the matched substring
+  // return name.replace(/oOel/g, '($&)'); // replace the matching group with whats in the brackets
+  // use callback function
+  // return name.replace(/[aeiou]/g, c => c.toUpperCase()).replace(/[BCDFGHJKLMNPQRSTVWXYZ]/g, c => c.toLowerCase());
+  // use groups $1 $2 $3
+  // return /(\w +\w)/.test(name);
+  const groupCount = name.match(/\w\s+\w/g);
+  if(groupCount.length > 1){ 
+    return name.replace(/^\s*(\w)\w*\s*(\w)\w*\s*(\w*)\w*\s*/, '$3, $1. $2.');
+    // return name.replace(/(\b\w) <- first group \w*\s*  (\w) <- second group \w*\s* (\w*) <- third group \w*/, '$3, $1. $2.');
+  } else {
+    return name.replace(/^\s*(\w)\w*\s*(\w*)\w*/, '$2, $1.');
+  }
+
+  
+}
+
+console.log(abbreviateName("Tom Sawyer"));
+console.log(abbreviateName("Tom William Sawyer"));
+console.log(abbreviateName("  Tom    Sawyer  "));
+console.log(abbreviateName(" Tom   William   Sawyer "));
+
+function isValidAustralianMobile(number) {
+  // Implementation using regular expression
+  const strippedNumber = number.replace(/[^\d]/g, '');
+  console.log("strippedNumber: ", strippedNumber);
+  console.log("match", strippedNumber.match(/^04\d{8}/g))
+  return /^04\d{8}$/.test(strippedNumber);
+}
+
+
+
+console.log(isValidAustralianMobile("0412345678")); //true
+console.log(isValidAustralianMobile("04 1234 5678")); //true
+console.log(isValidAustralianMobile("(04)12345678")); //true
+console.log(isValidAustralianMobile("0412-345-678")); //true
+console.log(isValidAustralianMobile("0412 3456 78")); //true
+console.log(isValidAustralianMobile("0312345678")); // false
+console.log(isValidAustralianMobile("04123456789")); // false
+console.log(isValidAustralianMobile("0412 345 67"));  // false

@@ -30,7 +30,7 @@
 
 function containDigit(str) {
   // Write your implementation
-  regex = /[0-9]/;
+  regex = /\d/;
   return regex.test(str);
 }
 

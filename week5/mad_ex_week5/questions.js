@@ -41,33 +41,51 @@
  */
 
 function createAccount(accountName, openingBalance) {
-  let currentBalance = openingBalance;
-  let transactions = [{ action: "open", amount: openingBalance }];
-  return {
-    deposit: (amount) => {
+  function deposit(amount) {
       if (amount > 0){
-        currentBalance += amount;
-        transactions.push({action: "deposit", amount: amount});
+        this.balance += amount;
+        this.transactions.push({action: "deposit", amount: amount});
         return "OK";
       };
-      return "Invalid amount";
-    },
-    withdraw: (amount) => {
+      return "Invalid deposit amount";
+    }
+    function withdraw(amount){
       if(amount > 0){
-        if(amount <= currentBalance){
-          currentBalance -= amount;
-          transactions.push({action: "withdraw", amount: amount});
+        if(amount <= this.balance){
+          this.balance -= amount;
+          this.transactions.push({action: "withdraw", amount: amount});
           return "OK";
         }
         return "Withdraw over balance";
       };
-      return "Invalid amount";
-    },
-    checkAccount: () => {
-      return {transactions: transactions, balance: currentBalance};
+      return "Invalid withdrawal amount";
+    }
+    function checkAccount(){
+      return {
+        transactions: this.transactions, 
+        balance: this.balance
+      };
+    }
+    if (new.target) {
+      this.balance = openingBalance;
+      this.name = accountName;
+      this.deposit = deposit.bind(this);
+      this.withdraw = withdraw.bind(this);
+      this.checkAccount = checkAccount.bind(this);
+      this.transactions = [{ action: "open", amount: openingBalance }];
+    } else {
+      const ret = {
+        action: "open",
+        balance: openingBalance,
+        transactions: [{ action: "open", amount: openingBalance }],
+      };
+      ret.deposit = deposit.bind(ret);
+      ret.withdraw = withdraw.bind(ret);
+      ret.checkAccount = checkAccount.bind(ret);
+      return ret;
     }
   } 
-}
+
 
 /**
  * Question 2: Using Getters and Setters in Function Generated Objects
