@@ -574,3 +574,44 @@ console.log(isValidAustralianMobile("0412 3456 78")); //true
 console.log(isValidAustralianMobile("0312345678")); // false
 console.log(isValidAustralianMobile("04123456789")); // false
 console.log(isValidAustralianMobile("0412 345 67"));  // false
+
+
+testNestedArray = [[1, 2, 3, 4, 5], [5,6,7,8,9], [20, 21, 34, 56, 100]];
+
+function sumMinVal (input){
+  let totalSum = 0;
+  input.forEach(innerArr => {
+    let currentMin = innerArr[0];
+     innerArr.forEach(elem => {
+      if( elem < currentMin){
+        currentMin = elem;
+      }
+     })
+      totalSum += currentMin;
+  })
+  return totalSum;
+}
+
+function sumMinVal2 (input){
+  let totalSum = 0;
+  input.forEach((arr) => {
+    totalSum += arr.reduce((min, current) => min < current ? min : current);
+  });
+  return totalSum;
+};
+
+function sumMinVal3(input) {
+  return input.reduce((totalSum, arr) => {
+    let minVal = arr.reduce((min, current) => min < current ? min : current);
+    return totalSum + minVal;
+  }, 0);
+}
+
+const sumMinVal4 = input => input.reduce((totalSum, arr) => totalSum + arr.reduce((min, num) => min < num ? min : num), 0);
+
+
+console.log(sumMinVal(testNestedArray));
+console.log(sumMinVal2(testNestedArray));
+console.log(sumMinVal3(testNestedArray));
+console.log(sumMinVal4(testNestedArray));
+
